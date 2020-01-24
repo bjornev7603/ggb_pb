@@ -6,8 +6,8 @@ export default class GgbWidget {
     this.eventHandlers = {
       CLEAR_DRAWING: () => this._clearDrawing(),
       UNDO: arg => this._undo(),
-      LINE: arg => {
-        console.log('LINE', arg)
+      ADD: arg => {
+        console.log('ADD er her', arg)
       },
       UPDATE: arg => {
         console.log('UPDATe', arg)
