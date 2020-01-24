@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Widget Template</title>
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      href="https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.geogebra.org/apps/deployggb.js"></script>
+    <script src="./lib/filtrex.js" defer></script>
+    <!-- **DEPENDENCIES END**-->
+    <script src="./main.js" type="module"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="content">
+        <h3>Testing ground for widgets</h3>
+        <p>
+          A div container is provided and sent to the widget constructor. You can change config for
+          widget by loading a file below!
+        </p>
+        <div class="action-wrapper">
+          <div class="box">
+            <input
+              type="file"
+              name="file-1[]"
+              id="json-log-file"
+              class="inputfile inputfile-1"
+              accept="application/json"
+            />
+            <label for="json-log-file">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                <path
+                  d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
+                />
+              </svg>
+              <span>
+                Load playback log (json) ...
+              </span>
+            </label>
+          </div>
+
+          <div class="box">
+            <input
+              type="file"
+              name="file-1[]"
+              id="config-file"
+              class="inputfile inputfile-1"
+              accept="application/json"
+            />
+            <label for="config-file">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                <path
+                  d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
+                />
+              </svg>
+              <span>
+                Load config...
+              </span>
+            </label>
+          </div>
+
+          <div class="box">
+            <div class="input-set-ans" id="set-ans">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20px"
+                height="20px"
+                viewBox="0 0 459 459"
+              >
+                <path
+                  d="M357,0H51C22.95,0,0,22.95,0,51v357c0,28.05,22.95,51,51,51h357c28.05,0,51-22.95,51-51V102L357,0z M229.5,408    c-43.35,0-76.5-33.15-76.5-76.5s33.15-76.5,76.5-76.5c43.35,0,76.5,33.15,76.5,76.5S272.85,408,229.5,408z M306,153H51V51h255V153    z"
+                />
+              </svg>
+              <span>
+                Set answer
+              </span>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="input-set-ans" id="playback">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20px"
+                height="20px"
+                viewBox="0 0 314.998 314.998"
+                style="enable-background:new 0 0 314.998 314.998;"
+              >
+                <g transform="translate(0 -562.36)">
+                  <polygon points="128.6,656.912 128.6,656.912 128.6,656.912    " />
+                  <path
+                    d="M115.5,671.112v97.7c0,10.5,10.5,17.3,19.9,12.6l98.2-48.8c10-5.3,10-20,0-25.2l-98.2-48.8c-2.1-1.1-4.2-1.7-6.8-1.7     C121.3,657.412,115.5,663.212,115.5,671.112z M143.3,693.712l52.5,26.3l-52.5,26.3V693.712z"
+                  />
+                  <path
+                    d="M237.8,590.812c-23.6-12.6-49.3-18.4-74.5-17.9l0,0c-3.7,0-7.4,0.6-11.1,1.1c-28.3,2.6-55.6,14.2-78.7,33.1     c-7.3-6.3-17.3-10-27.8-10c-25.2,0-45.7,20.5-45.7,45.7c0,24.7,20.5,45.2,45.7,45.2c24.6,0,45.1-20.5,45.1-45.2     c0-4.2-0.6-8.4-1.6-12.6c0.6,0,1.1-0.6,1.6-1.1c37.3-31.6,90.3-37.3,133.9-13.7c43,23.1,67.7,70.4,61.4,119.2     s-41.5,88.7-88.7,100.8c-47.8,12.1-98.2-6.3-126.5-46.2c-11.1-15.2-33.6,1.1-22.6,15.8c35.2,49.3,97.1,72.4,155.9,57.2     c58.3-14.7,102.4-64,109.7-124.4C321.3,678.012,290.8,619.212,237.8,590.812z M45.7,660.112c-9.9,0-17.8-7.8-17.8-17.3     c0-10,7.8-17.9,17.8-17.9c9.4,0,17.3,7.9,17.3,17.9C63,652.212,55.1,660.112,45.7,660.112z"
+                  />
+                </g>
+              </svg>
+              <span>
+                Playback
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="widget" id="widget-container"></div>
+    </div>
+  </body>
+</html>
