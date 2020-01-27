@@ -10,8 +10,9 @@ export default class GgbWidget {
         console.log('ADD er her', arg)
       },
       UPDATE: arg => {
-        console.log('UPDATe', arg)
-        this.api.setCoords('A', 12, 12)
+        let log = this.ans[arg]
+        console.log('UPDATe', log.object_name, log.data.x, log.data.y)
+        this.api.setCoords(log.object_name, log.data.x, log.data.y)
       },
       PEN: arg => {
         this.paper.activate()
