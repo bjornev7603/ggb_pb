@@ -11,6 +11,7 @@ export default class GgbWidget {
       },
       UPDATE: arg => {
         console.log('UPDATe', arg)
+        this.api.setCoords('A', 12, 12)
       },
       PEN: arg => {
         this.paper.activate()
@@ -242,7 +243,7 @@ export default class GgbWidget {
           return toggle
         },
         icon: 'mdi-skip-next',
-        rest_icon: 'backward'
+        reset_icon: 'mdi-skip-backward'
       }
     ]
     for (let tool of actions) {
