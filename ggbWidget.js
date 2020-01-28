@@ -7,12 +7,25 @@ export default class GgbWidget {
       CLEAR_DRAWING: () => this._clearDrawing(),
       UNDO: arg => this._undo(),
       ADD: arg => {
-        console.log('ADD er her', arg)
+        let logg = this.answer[arg]
+
+        if (logg.object_type == 'point') {
+          this.api.evalCommand(logg.object_name + '= (' + logg.data.x + ', ' + logg.data.y + ')')
+        }
+
+        if (logg.object_type == 'segment') {
+          let descr = logg.data.definition_string
+          //description values not in log, must fetch objects in string for now
+          let p_comma = descr.indexOf(',')
+          let b1 = descr.substring(p_comma - 1, p_comma)
+          let b2 = descr.substring(p_comma + 2, p_comma + 3)
+          this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+        }
       },
       UPDATE: arg => {
-        let log = this.ans[arg]
-        console.log('UPDATe', log.object_name, log.data.x, log.data.y)
-        this.api.setCoords(log.object_name, log.data.x, log.data.y)
+        let logg = this.answer[arg]
+        console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
+        this.api.setCoords(logg.object_name, logg.data.x, logg.data.y)
       },
       PEN: arg => {
         this.paper.activate()
@@ -68,7 +81,7 @@ export default class GgbWidget {
     }
 
     this.vars = {}
-    this.ans = answer || { log: [], states: [] }
+    this.answer = answer || { log: [], states: [] }
     this.onAnswer = onAnswer
     if (options.playback) {
       this.playback = options.playback
@@ -81,7 +94,7 @@ export default class GgbWidget {
       this.setAns()
     } else {
       this.state = {
-        next: this.ans[0].action,
+        next: this.answer[0].action,
         //next: this.ans.log[0].action,
         //next: this.answer.log[0].action,
 
@@ -89,10 +102,10 @@ export default class GgbWidget {
         forward: () => {
           let action = this.state.next,
             index = this.state.current
-          this.state.current = (this.state.current + 1) % this.ans.length
+          this.state.current = (this.state.current + 1) % this.answer.length
           //this.state.current = (this.state.current + 1) % this.ans.log.length
           //this.state.current = (this.state.current + 1) % this.answer.log.length
-          this.state.next = this.ans[this.state.current].action
+          this.state.next = this.answer[this.state.current].action
           //this.state.next = this.ans.log[this.state.current].action
           //this.state.next = this.answer.log[this.state.current].action
 
@@ -132,8 +145,8 @@ export default class GgbWidget {
     let log = {
       action: action,
       time: Date.now(),
-      delta_time: this.ans.log.length
-        ? Date.now() - this.ans.log[this.ans.log.length - 1].time
+      delta_time: this.answer.log.length
+        ? Date.now() - this.answer.log[this.answer.log.length - 1].time
         : null
     }
     let type = api.getObjectType(objName)
@@ -156,16 +169,16 @@ export default class GgbWidget {
     let def = api.getDefinitionString(objName)
     if (def !== '') data['definition_string'] = def
     if (Object.keys(data).length > 0) log.data = data
-    this.ans.log.push(log)
+    this.answer.log.push(log)
     this.setAns()
   }
 
   appletOnLoad = api => {
     //get A and B line points from answer log
     this.api = api
-    this.api.evalCommand('Line(A,B)')
+    //this.api.evalCommand('Line(A,B)')
     //this.api.getXcoord('A')
-    this.api.setCoords('A', 9, 9)
+    //this.api.setCoords('A', 9, 9)
 
     const addListener = objName => {
       s
@@ -195,7 +208,7 @@ export default class GgbWidget {
   }
 
   setAns() {
-    this.onAnswer(this.ans.log)
+    this.onAnswer(this.answer.log)
   }
 
   /* setAns2() {
@@ -231,14 +244,14 @@ export default class GgbWidget {
     const ControlDivElement = document.createElement('div')
     ControlDivElement.classList.add('drawing-playback-container')
 
-    //
+    //navigating between answers (states)
     const actions = [
       {
         name: '',
         handler: () => {
           let toggle = false
           let { action, index } = this.state.forward()
-          if (index == this.ans.length - 1) toggle = true
+          if (index == this.answer.length - 1) toggle = true
           //if (index == 0) this.eventHandlers.CLEAR_DRAWING()
           this.eventHandlers[action](index)
           return toggle
