@@ -44,7 +44,7 @@ fileJsonUpload.onchange = inn => {
     let jsonobj = JSON.parse(evt.target.result)
     logdata_json = jsonobj
     console.log(logdata_json)
-    makeWidget(currentConfig, logdata_json.widget1, true)
+    makeWidget(currentConfig, logdata_json.log, true)
   }
   fr.readAsText(file)
 }
