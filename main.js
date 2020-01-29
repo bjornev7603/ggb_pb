@@ -13,15 +13,15 @@ const fileJsonUpload = document.getElementById('json-log-file')
 const setAns = document.getElementById('set-ans')
 const playback = document.getElementById('playback')
 
-//let ans = {}
+let ans = {}
 
 setAns.onclick = () => {
   console.log('SETTING ANSWER')
-  makeWidget(currentConfig, answer)
+  makeWidget(currentConfig, ans.log)
 }
 playback.onclick = () => {
   console.log('PLAYBACK')
-  makeWidget(currentConfig, answer, true)
+  makeWidget(currentConfig, ans.log, true)
 }
 
 fileUpload.onchange = inn => {
@@ -49,8 +49,10 @@ fileJsonUpload.onchange = inn => {
   fr.readAsText(file)
 }
 
+//Onanswer is callback
+//Answer is previous
 let onAnswer = answer => {
-  //ans = answer
+  ans = answer
   console.log('ONANSWER')
   console.log(answer)
 }

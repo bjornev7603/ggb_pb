@@ -2,47 +2,68 @@ export default class GgbWidget {
   // class GgbWidget {
   constructor(divElementId, config, answer = null, onAnswer, options) {
     this.divElementId = divElementId
-
+    let logg = '',
+      xx = '',
+      yy = ''
     this.eventHandlers = {
-      CLEAR_DRAWING: () => this._clearDrawing(),
-      UNDO: arg => this._undo(),
       ADD: arg => {
-        let logg = this.answer[arg]
-
+        logg = this.answer[arg]
         if (logg.object_type == 'point') {
-          this.api.evalCommand(logg.object_name + '= (' + logg.data.x + ', ' + logg.data.y + ')')
+          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
+          xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
+          yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
+          this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
         }
 
-        if (logg.object_type == 'segment') {
+        if (logg.object_type == 'segment' || logg.object_type == 'line') {
+          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
           let descr = logg.data.definition_string
-          //description values not in log, must fetch objects in string for now
-          let p_comma = descr.indexOf(',')
-          let b1 = descr.substring(p_comma - 1, p_comma)
-          let b2 = descr.substring(p_comma + 2, p_comma + 3)
-          this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+          //description values not in log, must fetch objects in def_string for now
+          let elems = descr.split(' ')
+          let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
+          let b2 = elems[2]
+
+          if (logg.object_type == 'segment') {
+            this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+          }
+          if (logg.object_type == 'line') {
+            if (descr.indexOf('Midtnormal') == -1) {
+              this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
+            } else {
+              this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
+            }
+          }
         }
       },
       UPDATE: arg => {
-        let logg = this.answer[arg]
-        console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
-        this.api.setCoords(logg.object_name, logg.data.x, logg.data.y)
-      },
-      PEN: arg => {
-        this.paper.activate()
-        console.log('PEN', arg)
-        const data = this.answer.log[arg].data
-        console.log('DATA X:', data)
-        const path = new this.paper.Path({
-          strokeCap: 'round',
-          strokeJoin: 'round',
-          strokeWidth: data.strokeWidth,
-          strokeColor: data.color
-        })
-        for (let i = 0, len = data.x.length; i < len; i++) {
-          path.add(new this.paper.Point(data.x[i], data.y[i]))
+        logg = this.answer[arg]
+        if (logg.object_type == 'point') {
+          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
+          xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
+          yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
+          this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
         }
-        path.smooth()
-        this._paperPaths.push(path)
+
+        if (logg.object_type == 'segment' || logg.object_type == 'line') {
+          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
+          let descr = logg.data.definition_string
+          //description values not in log, must fetch objects in string for now
+
+          let elems = descr.split(' ')
+          let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
+          let b2 = elems[2]
+
+          if (logg.object_type == 'segment') {
+            this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+          }
+          if (logg.object_type == 'line') {
+            if (descr.indexOf('Midtnormal') == -1) {
+              this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
+            } else {
+              this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
+            }
+          }
+        }
       }
     }
 
@@ -133,7 +154,7 @@ export default class GgbWidget {
     }
     let listener = objName => {
       if (vars) appendVar(objName)
-      if (!aux) this.logger(api, name)
+      if (!aux && !this.playback) this.logger(api, name)
     }
     api.registerObjectUpdateListener(name, _debounced(250, listener))
     appendVar()
@@ -141,6 +162,9 @@ export default class GgbWidget {
   /**
    * Logs action to the answer.log array
    */
+
+  //answ_logg = (this.playback)? this.answer: this.answer.log
+
   logger = (api, objName = null, action = 'UPDATE') => {
     let log = {
       action: action,
@@ -155,6 +179,7 @@ export default class GgbWidget {
       log.object_type = type
     }
     if (action === 'ADD') this.addUpdateListener(api, objName, type)
+    log.command = api.getValueString(objName)
     let data = {}
     let value = api.getValue(objName)
     if (value !== NaN && value !== null) data.value = value
@@ -176,20 +201,19 @@ export default class GgbWidget {
   appletOnLoad = api => {
     //get A and B line points from answer log
     this.api = api
-    //this.api.evalCommand('Line(A,B)')
-    //this.api.getXcoord('A')
-    //this.api.setCoords('A', 9, 9)
 
     const addListener = objName => {
       s
       this.logger(api, objName, 'ADD')
     }
-    api.registerAddListener(addListener)
-
-    const clearListener = () => {
-      this.logger(api, null, 'RESET')
+    if (!this.playback) {
+      api.registerAddListener(addListener)
     }
-    api.registerClearListener(clearListener)
+
+    //const clearListener = () => {
+    //      this.logger(api, null, 'RESET')
+    //}
+    //api.registerClearListener(clearListener)
 
     // const clickListener = obj => {
     // 	console.log(obj)
@@ -208,7 +232,9 @@ export default class GgbWidget {
   }
 
   setAns() {
-    this.onAnswer(this.answer.log)
+    this.onAnswer(this.answer)
+    //this.onAnswer(this.answer.log)
+    let kva = 'k'
   }
 
   /* setAns2() {
