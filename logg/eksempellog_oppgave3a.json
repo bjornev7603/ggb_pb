@@ -1,6 +1,22 @@
 ﻿{
   "log": [
     {
+      "data": { "x": "1.00000", "y": "3.50000" },
+      "time": 1576581761512,
+      "action": "ADD",
+      "delta_time": "None",
+      "object_name": "B",
+      "object_type": "point"
+    },
+    {
+      "data": { "x": "4.00000", "y": "3.00000" },
+      "time": 1576581761512,
+      "action": "ADD",
+      "delta_time": "None",
+      "object_name": "A",
+      "object_type": "point"
+    },
+    {
       "data": { "value": 3.1622776601683795, "definition_string": "Linjestykke A, B" },
       "time": 1576581645901,
       "action": "ADD",

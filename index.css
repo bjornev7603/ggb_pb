@@ -119,3 +119,22 @@ body {
   margin-top: -0.25em;
   margin-right: 0.25em;
 }
+
+.playback-tool {
+  text-align: center;
+  vertical-align: center;
+  height: 30px;
+  width: 35px;
+  margin: 6px 3px;
+  /* color: #e4e4e4; */
+  line-height: 30px;
+  font-size: 24px;
+  cursor: pointer;
+  border: 2px solid gray;
+  border-radius: 4px;
+}
+
+.playback-tool:hover {
+  background-color: #f39c12;
+  color: #eeeeee;
+}

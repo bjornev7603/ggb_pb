@@ -78,38 +78,41 @@ export default class GgbWidget {
       xx = '',
       yy = ''
     logg = this.answer[arg]
-    if (logg.object_type == 'point') {
-      //Create Points: x and y pos either string or array
-      xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
-      yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
-      this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
-    }
 
-    if (logg.object_type == 'segment' || logg.object_type == 'line') {
-      let descr = logg.data.definition_string
-      //description values not in log, must fetch objects in def_string for now
-      let elems = descr.split(' ')
-      let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
-      let b2 = elems[2]
+    switch (logg.object_type) {
+      case 'point':
+        xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
+        yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
+        this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
+        break
+      case 'segment':
+      case 'line':
+        let descr = logg.data.definition_string
+        //description values not in log, must fetch objects in def_string for now
+        let elems = descr.split(' ')
+        let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
+        let b2 = elems[2]
 
-      if (logg.object_type == 'segment') {
-        //create Segment
-        this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
-      }
-      if (logg.object_type == 'line') {
-        if (descr.indexOf('Midtnormal') == -1) {
-          //create Line
-          this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
-        } else {
-          //Create PerpendicularBisector (midtnormal)
-          this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
+        switch (logg.object_type) {
+          case 'segment':
+            //create Segment
+            this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+            break
+          case 'line':
+            descr.indexOf('Midtnormal') === -1
+              ? //create Line
+                this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
+              : //Create PerpendicularBisector (midtnormal)
+                this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
+            break
         }
-      }
+        break
     }
   }
 
   clearAnimations() {
-    //todo
+    this.api.reset()
+    //this.api.newConstruction()
   }
 
   addUpdateListener = (api, name, type, vars = false, aux = false) => {
@@ -180,6 +183,10 @@ export default class GgbWidget {
     }
     if (!this.playback) {
       api.registerAddListener(addListener)
+    } else {
+      //If in playback modus:
+      //Animation display cleared, must click next button to view playback stages
+      //this.clearAnimations()
     }
 
     //const clearListener = () => {

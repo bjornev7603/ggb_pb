@@ -17,11 +17,11 @@ let ans = {}
 
 setAns.onclick = () => {
   console.log('SETTING ANSWER')
-  makeWidget(currentConfig, ans.log)
+  if (ans.log.length > 0) makeWidget(currentConfig, ans.log)
 }
 playback.onclick = () => {
   console.log('PLAYBACK')
-  makeWidget(currentConfig, ans.log, true)
+  if (ans.log.length > 0) makeWidget(currentConfig, ans.log, true)
 }
 
 fileUpload.onchange = inn => {
