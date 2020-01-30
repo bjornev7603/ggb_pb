@@ -2,69 +2,11 @@ export default class GgbWidget {
   // class GgbWidget {
   constructor(divElementId, config, answer = null, onAnswer, options) {
     this.divElementId = divElementId
-    let logg = '',
-      xx = '',
-      yy = ''
+
     this.eventHandlers = {
-      ADD: arg => {
-        logg = this.answer[arg]
-        if (logg.object_type == 'point') {
-          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
-          xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
-          yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
-          this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
-        }
-
-        if (logg.object_type == 'segment' || logg.object_type == 'line') {
-          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
-          let descr = logg.data.definition_string
-          //description values not in log, must fetch objects in def_string for now
-          let elems = descr.split(' ')
-          let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
-          let b2 = elems[2]
-
-          if (logg.object_type == 'segment') {
-            this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
-          }
-          if (logg.object_type == 'line') {
-            if (descr.indexOf('Midtnormal') == -1) {
-              this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
-            } else {
-              this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
-            }
-          }
-        }
-      },
-      UPDATE: arg => {
-        logg = this.answer[arg]
-        if (logg.object_type == 'point') {
-          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
-          xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
-          yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
-          this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
-        }
-
-        if (logg.object_type == 'segment' || logg.object_type == 'line') {
-          console.log(logg.action, logg.object_name, logg.data.x, logg.data.y)
-          let descr = logg.data.definition_string
-          //description values not in log, must fetch objects in string for now
-
-          let elems = descr.split(' ')
-          let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
-          let b2 = elems[2]
-
-          if (logg.object_type == 'segment') {
-            this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
-          }
-          if (logg.object_type == 'line') {
-            if (descr.indexOf('Midtnormal') == -1) {
-              this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
-            } else {
-              this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
-            }
-          }
-        }
-      }
+      ADD: arg => this.draw_ggb(arg),
+      UPDATE: arg => this.draw_ggb(arg),
+      CLEAR_ANIMATIONS: () => this.clearAnimations()
     }
 
     this.ggbId = `${this.divElementId}GGBcontainer`
@@ -116,26 +58,58 @@ export default class GgbWidget {
     } else {
       this.state = {
         next: this.answer[0].action,
-        //next: this.ans.log[0].action,
-        //next: this.answer.log[0].action,
 
         current: 0,
         forward: () => {
           let action = this.state.next,
             index = this.state.current
           this.state.current = (this.state.current + 1) % this.answer.length
-          //this.state.current = (this.state.current + 1) % this.ans.log.length
-          //this.state.current = (this.state.current + 1) % this.answer.log.length
           this.state.next = this.answer[this.state.current].action
-          //this.state.next = this.ans.log[this.state.current].action
-          //this.state.next = this.answer.log[this.state.current].action
 
           return { action: action, index: index }
         }
       }
-      let vf = 4
     }
     window.onload = this.runscript()
+  }
+
+  draw_ggb(arg) {
+    let logg = '',
+      xx = '',
+      yy = ''
+    logg = this.answer[arg]
+    if (logg.object_type == 'point') {
+      //Create Points: x and y pos either string or array
+      xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
+      yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
+      this.api.evalCommand(logg.object_name + '= (' + xx + ', ' + yy + ')')
+    }
+
+    if (logg.object_type == 'segment' || logg.object_type == 'line') {
+      let descr = logg.data.definition_string
+      //description values not in log, must fetch objects in def_string for now
+      let elems = descr.split(' ')
+      let b1 = elems[1].includes(',') ? elems[1].slice(0, elems[1].indexOf(',')) : elems[1]
+      let b2 = elems[2]
+
+      if (logg.object_type == 'segment') {
+        //create Segment
+        this.api.evalCommand(logg.object_name + '= Segment(' + b1 + ',' + b2 + ')')
+      }
+      if (logg.object_type == 'line') {
+        if (descr.indexOf('Midtnormal') == -1) {
+          //create Line
+          this.api.evalCommand(logg.object_name + '= Line(' + b1 + ',' + b2 + ')')
+        } else {
+          //Create PerpendicularBisector (midtnormal)
+          this.api.evalCommand(logg.object_name + '= PerpendicularBisector(' + b1 + ')')
+        }
+      }
+    }
+  }
+
+  clearAnimations() {
+    //todo
   }
 
   addUpdateListener = (api, name, type, vars = false, aux = false) => {
@@ -162,8 +136,6 @@ export default class GgbWidget {
   /**
    * Logs action to the answer.log array
    */
-
-  //answ_logg = (this.playback)? this.answer: this.answer.log
 
   logger = (api, objName = null, action = 'UPDATE') => {
     let log = {
@@ -233,22 +205,7 @@ export default class GgbWidget {
 
   setAns() {
     this.onAnswer(this.answer)
-    //this.onAnswer(this.answer.log)
-    let kva = 'k'
   }
-
-  /* setAns2() {
-    this.paper.activate()
-    console.log('loading answer')
-    // render paths
-    if (this.answer.paperJSON && this.answer.paperJSON.length) {
-      for (let path of this.answer.paperJSON) {
-        let newPath = new this.paper.Path()
-        newPath.importJSON(path)
-        this._paperPaths.push(newPath)
-      }
-    }
-  } */
 
   buildDOM() {
     if (this.playback) this.buildPlayback()
@@ -278,7 +235,7 @@ export default class GgbWidget {
           let toggle = false
           let { action, index } = this.state.forward()
           if (index == this.answer.length - 1) toggle = true
-          //if (index == 0) this.eventHandlers.CLEAR_DRAWING()
+          if (index == 0) this.eventHandlers.CLEAR_ANIMATIONS()
           this.eventHandlers[action](index)
           return toggle
         },
@@ -309,25 +266,6 @@ export default class GgbWidget {
     menuDivElement.append(ControlDivElement)
     divEl.appendChild(menuDivElement)
   }
-
-  // buildMenu() {
-  //   let divElement = document.getElementById(this.divElementId)
-
-  //   let menuDivElement = document.createElement('div')
-  //   menuDivElement.classList.add('drawing-menu-container')
-
-  //   let ColorDivElement = document.createElement('div')
-  //   ColorDivElement.classList.add('drawing-group-container')
-
-  //   let StrokeDivElement = document.createElement('div')
-  //   StrokeDivElement.classList.add('drawing-group-container')
-
-  //   let ToolDivElement = document.createElement('div')
-  //   ToolDivElement.classList.add('drawing-group-container')
-
-  //   let ControlDivElement = document.createElement('div')
-  //   ControlDivElement.classList.add('drawing-group-container')
-  // }
 
   runscript() {
     this.applet = new GGBApplet(this.config.ggbApplet, '5.0', this.ggbId)
