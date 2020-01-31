@@ -43,6 +43,11 @@ export default class GgbWidget {
       vars: config.vars || []
     }
 
+    this.config = {
+      ...default_config,
+      ...config
+    }
+
     this.vars = {}
     this.answer = answer || { log: [], states: [] }
     this.onAnswer = onAnswer
@@ -286,8 +291,11 @@ export default class GgbWidget {
 }
 
 var ggbWidget = {
-  scripts: ['https://cdn.geogebra.org/apps/deployggb.js'],
-  links: [],
+  scripts: ['https://cdn.geogebra.org/apps/deployggb.js', './lib/filtrex.js'],
+  links: [
+    '/widgets/css/ggbwidget.css',
+    'https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css'
+  ],
   widgetClass: GgbWidget,
   contributesAnswer: true,
   jsonSchema: {

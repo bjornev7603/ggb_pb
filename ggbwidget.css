@@ -1,0 +1,140 @@
+:root {
+  --selected-color: #000;
+}
+.drawing-playback-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+body {
+  background-color: #c3cbdd;
+}
+
+.card {
+  background-color: #fff;
+  max-width: 95%;
+  min-height: 70vh;
+  margin: 3vh auto;
+  border: 1px solid #dbd8de;
+
+  box-shadow: 0.1em 0.1em 0.4em rgba(47, 47, 47, 0.411);
+  border-radius: 0.15em;
+}
+
+.header {
+  background-color: #fff;
+  max-width: 95%;
+  margin: 3vh auto;
+  border: 1px solid #dbd8de;
+  box-shadow: 0.1em 0.1em 0.4em rgba(47, 47, 47, 0.411);
+  border-radius: 0.15em;
+}
+
+.header > .content {
+  padding-left: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.action-wrapper {
+  display: flex;
+  flex-flow: row;
+  align-content: flex-start;
+  align-items: center;
+}
+
+.box {
+  margin-left: 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  border-radius: 0.15em;
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label,
+.input-set-ans {
+  max-width: 80%;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.inputfile-1 + label,
+.input-set-ans {
+  color: #c3cbdd;
+  background-color: #4168c3;
+}
+
+.inputfile + label svg,
+.input-set-ans svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  margin-right: 0.25em;
+}
+
+.playback-tool {
+  text-align: center;
+  vertical-align: center;
+  height: 30px;
+  width: 35px;
+  margin: 6px 3px;
+  /* color: #e4e4e4; */
+  line-height: 30px;
+  font-size: 24px;
+  cursor: pointer;
+  border: 2px solid gray;
+  border-radius: 4px;
+}
+
+.playback-tool:hover {
+  background-color: #f39c12;
+  color: #eeeeee;
+}
