@@ -43,10 +43,10 @@ export default class GgbWidget {
       vars: config.vars || []
     }
 
-    this.config = {
+    /* this.config = {
       ...default_config,
       ...config
-    }
+    } */
 
     this.vars = {}
     this.answer = answer || { log: [], states: [] }
