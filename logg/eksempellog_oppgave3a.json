@@ -1,36 +1,20 @@
 ﻿{
   "log": [
     {
-      "data": { "x": "1.00000", "y": "3.50000" },
-      "time": 1576581761512,
-      "action": "ADD",
-      "delta_time": "None",
-      "object_name": "B",
-      "object_type": "point"
-    },
-    {
-      "data": { "x": "4.00000", "y": "3.00000" },
-      "time": 1576581761512,
-      "action": "ADD",
-      "delta_time": "None",
-      "object_name": "A",
-      "object_type": "point"
-    },
-    {
-      "data": { "value": 3.1622776601683795, "definition_string": "Linjestykke A, B" },
+      "data": { "value": 3.1622776601683795, "definitionString": "Linjestykke A, B" },
       "time": 1576581645901,
       "action": "ADD",
-      "delta_time": "None",
-      "object_name": "f",
-      "object_type": "segment"
+      "deltaTime": "None",
+      "objectName": "f",
+      "objectType": "segment"
     },
     {
-      "data": { "value": "None", "definition_string": "Midtnormal f" },
+      "data": { "value": "None", "definitionString": "Midtnormal f" },
       "time": 1576581649081,
       "action": "ADD",
-      "delta_time": 3180,
-      "object_name": "g",
-      "object_type": "line"
+      "deltaTime": 3180,
+      "objectName": "g",
+      "objectType": "line"
     }
   ]
 }

@@ -1,916 +1,900 @@
 {
   "log": [
     {
-      "data": { "x": "0.00000", "y": "8.00000", "definition_string": "Punkt p� yAkse" },
-      "time": 1576580823282,
-      "action": "ADD",
-      "delta_time": "None",
-      "object_name": "A",
-      "object_type": "point"
-    },
-    {
-      "data": { "x": "12.13303", "y": "7.98709" },
-      "time": 1576580829973,
-      "action": "ADD",
-      "delta_time": 6691,
-      "object_name": "B",
-      "object_type": "point"
-    },
-    {
-      "data": { "value": "None", "definition_string": "Linje A, B" },
+      "data": { "value": "None", "definitionString": "Linje A, B" },
       "time": 1576580830010,
       "action": "ADD",
-      "delta_time": 37,
-      "object_name": "f",
-      "object_type": "line"
+      "deltaTime": 37,
+      "objectName": "f",
+      "objectType": "line"
     },
     {
       "data": { "x": "6.00000", "y": "14.00000" },
       "time": 1576580917649,
       "action": "ADD",
-      "delta_time": 87639,
-      "object_name": "C",
-      "object_type": "point"
+      "deltaTime": 87639,
+      "objectName": "C",
+      "objectType": "point"
     },
     {
       "data": { "x": "6.00000", "y": "2.00000" },
       "time": 1576580931602,
       "action": "ADD",
-      "delta_time": 13953,
-      "object_name": "D",
-      "object_type": "point"
+      "deltaTime": 13953,
+      "objectName": "D",
+      "objectType": "point"
     },
     {
       "data": { "x": "12.13303", "y": "7.98709" },
       "time": 1576581005772,
       "action": "UPDATE",
-      "delta_time": 74170,
-      "object_name": "B",
-      "object_type": "point"
+      "deltaTime": 74170,
+      "objectName": "B",
+      "objectType": "point"
     },
     {
       "data": { "x": "11.28989", "y": "8.83023" },
       "time": 1576581012325,
       "action": "ADD",
-      "delta_time": 6553,
-      "object_name": "E",
-      "object_type": "point"
+      "deltaTime": 6553,
+      "objectName": "E",
+      "objectType": "point"
     },
     {
-      "data": { "value": "None", "definition_string": "Linje C, E" },
+      "data": { "value": "None", "definitionString": "Linje C, E" },
       "time": 1576581012353,
       "action": "ADD",
-      "delta_time": 28,
-      "object_name": "g",
-      "object_type": "line"
+      "deltaTime": 28,
+      "objectName": "g",
+      "objectType": "line"
     },
     {
-      "data": { "value": 8.588898667014814, "definition_string": "Linjestykke B, C" },
+      "data": { "value": 8.588898667014814, "definitionString": "Linjestykke B, C" },
       "time": 1576581025093,
       "action": "ADD",
-      "delta_time": 12740,
-      "object_name": "g",
-      "object_type": "segment"
+      "deltaTime": 12740,
+      "objectName": "g",
+      "objectType": "segment"
     },
     {
       "data": { "x": "6.00000", "y": "14.00000" },
       "time": 1576581025381,
       "action": "UPDATE",
-      "delta_time": 288,
-      "object_name": "C",
-      "object_type": "point"
+      "deltaTime": 288,
+      "objectName": "C",
+      "objectType": "point"
     },
     {
-      "data": { "value": "None", "definition_string": "Midtnormal g" },
+      "data": { "value": "None", "definitionString": "Midtnormal g" },
       "time": 1576581027644,
       "action": "ADD",
-      "delta_time": 2263,
-      "object_name": "h",
-      "object_type": "line"
+      "deltaTime": 2263,
+      "objectName": "h",
+      "objectType": "line"
     },
     {
       "data": { "x": "10.00000", "y": "4.00000" },
       "time": 1576581202065,
       "action": "ADD",
-      "delta_time": 174421,
-      "object_name": "E",
-      "object_type": "point"
+      "deltaTime": 174421,
+      "objectName": "E",
+      "objectType": "point"
     },
     {
       "data": { "x": "10.00000", "y": "12.00000" },
       "time": 1576581206016,
       "action": "ADD",
-      "delta_time": 3951,
-      "object_name": "F",
-      "object_type": "point"
+      "deltaTime": 3951,
+      "objectName": "F",
+      "objectType": "point"
     },
     {
       "data": { "x": "2.00000", "y": "12.00000" },
       "time": 1576581209221,
       "action": "ADD",
-      "delta_time": 3205,
-      "object_name": "G",
-      "object_type": "point"
+      "deltaTime": 3205,
+      "objectName": "G",
+      "objectType": "point"
     },
     {
       "data": { "x": "2.00000", "y": "4.00000" },
       "time": 1576581213213,
       "action": "ADD",
-      "delta_time": 3992,
-      "object_name": "H",
-      "object_type": "point"
+      "deltaTime": 3992,
+      "objectName": "H",
+      "objectType": "point"
     },
     {
       "data": { "x": "10.00000", "y": "4.00000" },
       "time": 1576581308833,
       "action": "ADD",
-      "delta_time": 95620,
-      "object_name": "E",
-      "object_type": "point"
+      "deltaTime": 95620,
+      "objectName": "E",
+      "objectType": "point"
     },
     {
       "data": { "x": "7.00000", "y": "2.00000" },
       "time": 1576581329969,
       "action": "ADD",
-      "delta_time": 21136,
-      "object_name": "F",
-      "object_type": "point"
+      "deltaTime": 21136,
+      "objectName": "F",
+      "objectType": "point"
     },
     {
       "data": { "x": "7.00000", "y": "3.00000" },
       "time": 1576581333336,
       "action": "ADD",
-      "delta_time": 3367,
-      "object_name": "G",
-      "object_type": "point"
+      "deltaTime": 3367,
+      "objectName": "G",
+      "objectType": "point"
     },
     {
       "data": { "x": "8.00000", "y": "3.00000" },
       "time": 1576581335105,
       "action": "ADD",
-      "delta_time": 1769,
-      "object_name": "H",
-      "object_type": "point"
+      "deltaTime": 1769,
+      "objectName": "H",
+      "objectType": "point"
     },
     {
       "data": { "x": "8.00000", "y": "4.00000" },
       "time": 1576581336076,
       "action": "ADD",
-      "delta_time": 971,
-      "object_name": "I",
-      "object_type": "point"
+      "deltaTime": 971,
+      "objectName": "I",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke D, F" },
+      "data": { "value": 1, "definitionString": "Linjestykke D, F" },
       "time": 1576581340095,
       "action": "ADD",
-      "delta_time": 4019,
-      "object_name": "g",
-      "object_type": "segment"
+      "deltaTime": 4019,
+      "objectName": "g",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke G, H" },
+      "data": { "value": 1, "definitionString": "Linjestykke G, H" },
       "time": 1576581341875,
       "action": "ADD",
-      "delta_time": 1780,
-      "object_name": "h",
-      "object_type": "segment"
+      "deltaTime": 1780,
+      "objectName": "h",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke I, E" },
+      "data": { "value": 2, "definitionString": "Linjestykke I, E" },
       "time": 1576581343415,
       "action": "ADD",
-      "delta_time": 1540,
-      "object_name": "i",
-      "object_type": "segment"
+      "deltaTime": 1540,
+      "objectName": "i",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke I, H" },
+      "data": { "value": 1, "definitionString": "Linjestykke I, H" },
       "time": 1576581345495,
       "action": "ADD",
-      "delta_time": 2080,
-      "object_name": "j",
-      "object_type": "segment"
+      "deltaTime": 2080,
+      "objectName": "j",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke G, F" },
+      "data": { "value": 1, "definitionString": "Linjestykke G, F" },
       "time": 1576581347043,
       "action": "ADD",
-      "delta_time": 1548,
-      "object_name": "k",
-      "object_type": "segment"
+      "deltaTime": 1548,
+      "objectName": "k",
+      "objectType": "segment"
     },
     {
       "data": { "x": "10.00000", "y": "6.00000" },
       "time": 1576581357509,
       "action": "ADD",
-      "delta_time": 10466,
-      "object_name": "J",
-      "object_type": "point"
+      "deltaTime": 10466,
+      "objectName": "J",
+      "objectType": "point"
     },
     {
       "data": { "x": "11.00000", "y": "6.00000" },
       "time": 1576581358681,
       "action": "ADD",
-      "delta_time": 1172,
-      "object_name": "K",
-      "object_type": "point"
+      "deltaTime": 1172,
+      "objectName": "K",
+      "objectType": "point"
     },
     {
       "data": { "x": "11.00000", "y": "7.00000" },
       "time": 1576581359470,
       "action": "ADD",
-      "delta_time": 789,
-      "object_name": "L",
-      "object_type": "point"
+      "deltaTime": 789,
+      "objectName": "L",
+      "objectType": "point"
     },
     {
       "data": { "x": "12.00000", "y": "7.00000" },
       "time": 1576581360350,
       "action": "ADD",
-      "delta_time": 880,
-      "object_name": "M",
-      "object_type": "point"
+      "deltaTime": 880,
+      "objectName": "M",
+      "objectType": "point"
     },
     {
       "data": { "x": ["12.13303", "12.00000", "12.00000"], "y": ["7.98709", "8.00000", "8.00000"] },
       "time": 1576581378090,
       "action": "UPDATE",
-      "delta_time": [17740, 949, 1478],
-      "object_name": "B",
-      "object_type": "point"
+      "deltaTime": [17740, 949, 1478],
+      "objectName": "B",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke B, M" },
+      "data": { "value": 1, "definitionString": "Linjestykke B, M" },
       "time": 1576581385621,
       "action": "ADD",
-      "delta_time": 7531,
-      "object_name": "l",
-      "object_type": "segment"
+      "deltaTime": 7531,
+      "objectName": "l",
+      "objectType": "segment"
     },
     {
       "data": { "x": "12.00000", "y": "7.00000" },
       "time": 1576581385901,
       "action": "UPDATE",
-      "delta_time": 280,
-      "object_name": "M",
-      "object_type": "point"
+      "deltaTime": 280,
+      "objectName": "M",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke L, M" },
+      "data": { "value": 1, "definitionString": "Linjestykke L, M" },
       "time": 1576581387692,
       "action": "ADD",
-      "delta_time": 1791,
-      "object_name": "m",
-      "object_type": "segment"
+      "deltaTime": 1791,
+      "objectName": "m",
+      "objectType": "segment"
     },
     {
       "data": { "x": "12.00000", "y": "7.00000" },
       "time": 1576581387967,
       "action": "UPDATE",
-      "delta_time": 275,
-      "object_name": "M",
-      "object_type": "point"
+      "deltaTime": 275,
+      "objectName": "M",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke L, K" },
+      "data": { "value": 1, "definitionString": "Linjestykke L, K" },
       "time": 1576581389137,
       "action": "ADD",
-      "delta_time": 1170,
-      "object_name": "n",
-      "object_type": "segment"
+      "deltaTime": 1170,
+      "objectName": "n",
+      "objectType": "segment"
     },
     {
       "data": { "x": "11.00000", "y": "6.00000" },
       "time": 1576581389413,
       "action": "UPDATE",
-      "delta_time": 276,
-      "object_name": "K",
-      "object_type": "point"
+      "deltaTime": 276,
+      "objectName": "K",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke K, J" },
+      "data": { "value": 1, "definitionString": "Linjestykke K, J" },
       "time": 1576581390454,
       "action": "ADD",
-      "delta_time": 1041,
-      "object_name": "p",
-      "object_type": "segment"
+      "deltaTime": 1041,
+      "objectName": "p",
+      "objectType": "segment"
     },
     {
       "data": { "x": "10.00000", "y": "6.00000" },
       "time": 1576581390731,
       "action": "UPDATE",
-      "delta_time": 277,
-      "object_name": "J",
-      "object_type": "point"
+      "deltaTime": 277,
+      "objectName": "J",
+      "objectType": "point"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke J, E" },
+      "data": { "value": 2, "definitionString": "Linjestykke J, E" },
       "time": 1576581391696,
       "action": "ADD",
-      "delta_time": 965,
-      "object_name": "q",
-      "object_type": "segment"
+      "deltaTime": 965,
+      "objectName": "q",
+      "objectType": "segment"
     },
     {
       "data": { "x": "10.00000", "y": "4.00000" },
       "time": 1576581391972,
       "action": "UPDATE",
-      "delta_time": 276,
-      "object_name": "E",
-      "object_type": "point"
+      "deltaTime": 276,
+      "objectName": "E",
+      "objectType": "point"
     },
     {
       "data": { "x": "12.00000", "y": "9.00000" },
       "time": 1576581407898,
       "action": "ADD",
-      "delta_time": 15926,
-      "object_name": "N",
-      "object_type": "point"
+      "deltaTime": 15926,
+      "objectName": "N",
+      "objectType": "point"
     },
     {
       "data": { "x": "11.00000", "y": "9.00000" },
       "time": 1576581409142,
       "action": "ADD",
-      "delta_time": 1244,
-      "object_name": "O",
-      "object_type": "point"
+      "deltaTime": 1244,
+      "objectName": "O",
+      "objectType": "point"
     },
     {
       "data": { "x": "11.00000", "y": "10.00000" },
       "time": 1576581409972,
       "action": "ADD",
-      "delta_time": 830,
-      "object_name": "P",
-      "object_type": "point"
+      "deltaTime": 830,
+      "objectName": "P",
+      "objectType": "point"
     },
     {
       "data": { "x": "10.00000", "y": "10.00000" },
       "time": 1576581411872,
       "action": "ADD",
-      "delta_time": 1900,
-      "object_name": "Q",
-      "object_type": "point"
+      "deltaTime": 1900,
+      "objectName": "Q",
+      "objectType": "point"
     },
     {
       "data": { "x": "10.00000", "y": "12.00000" },
       "time": 1576581413653,
       "action": "ADD",
-      "delta_time": 1781,
-      "object_name": "R",
-      "object_type": "point"
+      "deltaTime": 1781,
+      "objectName": "R",
+      "objectType": "point"
     },
     {
       "data": { "x": "8.00000", "y": "12.00000" },
       "time": 1576581415492,
       "action": "ADD",
-      "delta_time": 1839,
-      "object_name": "T",
-      "object_type": "point"
+      "deltaTime": 1839,
+      "objectName": "T",
+      "objectType": "point"
     },
     {
       "data": { "x": "8.00000", "y": "13.00000" },
       "time": 1576581416209,
       "action": "ADD",
-      "delta_time": 717,
-      "object_name": "U",
-      "object_type": "point"
+      "deltaTime": 717,
+      "objectName": "U",
+      "objectType": "point"
     },
     {
       "data": { "x": "7.00000", "y": "13.00000" },
       "time": 1576581416888,
       "action": "ADD",
-      "delta_time": 679,
-      "object_name": "V",
-      "object_type": "point"
+      "deltaTime": 679,
+      "objectName": "V",
+      "objectType": "point"
     },
     {
       "data": { "x": "7.00000", "y": "14.00000" },
       "time": 1576581420671,
       "action": "ADD",
-      "delta_time": 3783,
-      "object_name": "W",
-      "object_type": "point"
+      "deltaTime": 3783,
+      "objectName": "W",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke B, N" },
+      "data": { "value": 1, "definitionString": "Linjestykke B, N" },
       "time": 1576581432422,
       "action": "ADD",
-      "delta_time": 11751,
-      "object_name": "r",
-      "object_type": "segment"
+      "deltaTime": 11751,
+      "objectName": "r",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke N, O" },
+      "data": { "value": 1, "definitionString": "Linjestykke N, O" },
       "time": 1576581433714,
       "action": "ADD",
-      "delta_time": 1292,
-      "object_name": "s",
-      "object_type": "segment"
+      "deltaTime": 1292,
+      "objectName": "s",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke O, P" },
+      "data": { "value": 1, "definitionString": "Linjestykke O, P" },
       "time": 1576581434503,
       "action": "ADD",
-      "delta_time": 789,
-      "object_name": "t",
-      "object_type": "segment"
+      "deltaTime": 789,
+      "objectName": "t",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke P, Q" },
+      "data": { "value": 1, "definitionString": "Linjestykke P, Q" },
       "time": 1576581435656,
       "action": "ADD",
-      "delta_time": 1153,
-      "object_name": "a",
-      "object_type": "segment"
+      "deltaTime": 1153,
+      "objectName": "a",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke Q, R" },
+      "data": { "value": 2, "definitionString": "Linjestykke Q, R" },
       "time": 1576581437110,
       "action": "ADD",
-      "delta_time": 1454,
-      "object_name": "b",
-      "object_type": "segment"
+      "deltaTime": 1454,
+      "objectName": "b",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke R, T" },
+      "data": { "value": 2, "definitionString": "Linjestykke R, T" },
       "time": 1576581438788,
       "action": "ADD",
-      "delta_time": 1678,
-      "object_name": "c",
-      "object_type": "segment"
+      "deltaTime": 1678,
+      "objectName": "c",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke T, U" },
+      "data": { "value": 1, "definitionString": "Linjestykke T, U" },
       "time": 1576581439827,
       "action": "ADD",
-      "delta_time": 1039,
-      "object_name": "d",
-      "object_type": "segment"
+      "deltaTime": 1039,
+      "objectName": "d",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke U, V" },
+      "data": { "value": 1, "definitionString": "Linjestykke U, V" },
       "time": 1576581441710,
       "action": "ADD",
-      "delta_time": 1883,
-      "object_name": "e",
-      "object_type": "segment"
+      "deltaTime": 1883,
+      "objectName": "e",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke V, W" },
+      "data": { "value": 1, "definitionString": "Linjestykke V, W" },
       "time": 1576581442691,
       "action": "ADD",
-      "delta_time": 981,
-      "object_name": "f_1",
-      "object_type": "segment"
+      "deltaTime": 981,
+      "objectName": "f_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke W, C" },
+      "data": { "value": 1, "definitionString": "Linjestykke W, C" },
       "time": 1576581443609,
       "action": "ADD",
-      "delta_time": 918,
-      "object_name": "g_1",
-      "object_type": "segment"
+      "deltaTime": 918,
+      "objectName": "g_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "6.00000", "y": "14.00000" },
       "time": 1576581443887,
       "action": "UPDATE",
-      "delta_time": 278,
-      "object_name": "C",
-      "object_type": "point"
+      "deltaTime": 278,
+      "objectName": "C",
+      "objectType": "point"
     },
     {
       "data": { "x": "5.00000", "y": "14.00000" },
       "time": 1576581451544,
       "action": "ADD",
-      "delta_time": 7657,
-      "object_name": "Z",
-      "object_type": "point"
+      "deltaTime": 7657,
+      "objectName": "Z",
+      "objectType": "point"
     },
     {
       "data": { "x": "5.00000", "y": "13.00000" },
       "time": 1576581452495,
       "action": "ADD",
-      "delta_time": 951,
-      "object_name": "A_1",
-      "object_type": "point"
+      "deltaTime": 951,
+      "objectName": "A_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.00000", "y": "13.00000" },
       "time": 1576581453506,
       "action": "ADD",
-      "delta_time": 1011,
-      "object_name": "B_1",
-      "object_type": "point"
+      "deltaTime": 1011,
+      "objectName": "B_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.07257", "y": "12.16908" },
       "time": 1576581454527,
       "action": "ADD",
-      "delta_time": 1021,
-      "object_name": "C_1",
-      "object_type": "point"
+      "deltaTime": 1021,
+      "objectName": "C_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.00000", "y": "12.00000" },
       "time": 1576581459536,
       "action": "ADD",
-      "delta_time": 5009,
-      "object_name": "C_1",
-      "object_type": "point"
+      "deltaTime": 5009,
+      "objectName": "C_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "2.00000", "y": "12.00000" },
       "time": 1576581461387,
       "action": "ADD",
-      "delta_time": 1851,
-      "object_name": "D_1",
-      "object_type": "point"
+      "deltaTime": 1851,
+      "objectName": "D_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "2.00000", "y": "10.00000" },
       "time": 1576581464694,
       "action": "ADD",
-      "delta_time": 3307,
-      "object_name": "E_1",
-      "object_type": "point"
+      "deltaTime": 3307,
+      "objectName": "E_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "1.00000", "y": "10.00000" },
       "time": 1576581465705,
       "action": "ADD",
-      "delta_time": 1011,
-      "object_name": "F_1",
-      "object_type": "point"
+      "deltaTime": 1011,
+      "objectName": "F_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "1.03725", "y": "9.13376" },
       "time": 1576581466949,
       "action": "ADD",
-      "delta_time": 1244,
-      "object_name": "G_1",
-      "object_type": "point"
+      "deltaTime": 1244,
+      "objectName": "G_1",
+      "objectType": "point"
     },
     {
-      "data": { "x": "0.00000", "y": "9.00000", "definition_string": "Punkt på yAkse" },
+      "data": { "x": "0.00000", "y": "9.00000", "definitionString": "Punkt på yAkse" },
       "time": 1576581468526,
       "action": "ADD",
-      "delta_time": 1577,
-      "object_name": "H_1",
-      "object_type": "point"
+      "deltaTime": 1577,
+      "objectName": "H_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke A, H_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke A, H_1" },
       "time": 1576581480251,
       "action": "ADD",
-      "delta_time": 11725,
-      "object_name": "h_1",
-      "object_type": "segment"
+      "deltaTime": 11725,
+      "objectName": "h_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": ["1.00000", "1.00000"], "y": ["9.00000", "9.00000"] },
       "time": 1576581486016,
       "action": "UPDATE",
-      "delta_time": [5765, 382],
-      "object_name": "G_1",
-      "object_type": "point"
+      "deltaTime": [5765, 382],
+      "objectName": "G_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke H_1, G_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke H_1, G_1" },
       "time": 1576581489966,
       "action": "ADD",
-      "delta_time": 3950,
-      "object_name": "i_1",
-      "object_type": "segment"
+      "deltaTime": 3950,
+      "objectName": "i_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "1.00000", "y": "9.00000" },
       "time": 1576581490244,
       "action": "UPDATE",
-      "delta_time": 278,
-      "object_name": "G_1",
-      "object_type": "point"
+      "deltaTime": 278,
+      "objectName": "G_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke G_1, F_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke G_1, F_1" },
       "time": 1576581490949,
       "action": "ADD",
-      "delta_time": 705,
-      "object_name": "j_1",
-      "object_type": "segment"
+      "deltaTime": 705,
+      "objectName": "j_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "1.00000", "y": "10.00000" },
       "time": 1576581491230,
       "action": "UPDATE",
-      "delta_time": 281,
-      "object_name": "F_1",
-      "object_type": "point"
+      "deltaTime": 281,
+      "objectName": "F_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke F_1, E_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke F_1, E_1" },
       "time": 1576581491825,
       "action": "ADD",
-      "delta_time": 595,
-      "object_name": "k_1",
-      "object_type": "segment"
+      "deltaTime": 595,
+      "objectName": "k_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "2.00000", "y": "10.00000" },
       "time": 1576581492103,
       "action": "UPDATE",
-      "delta_time": 278,
-      "object_name": "E_1",
-      "object_type": "point"
+      "deltaTime": 278,
+      "objectName": "E_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke E_1, D_1" },
+      "data": { "value": 2, "definitionString": "Linjestykke E_1, D_1" },
       "time": 1576581493442,
       "action": "ADD",
-      "delta_time": 1340,
-      "object_name": "l_1",
-      "object_type": "segment"
+      "deltaTime": 1340,
+      "objectName": "l_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "2.00000", "y": "12.00000" },
       "time": 1576581493724,
       "action": "UPDATE",
-      "delta_time": 282,
-      "object_name": "D_1",
-      "object_type": "point"
+      "deltaTime": 282,
+      "objectName": "D_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke D_1, C_1" },
+      "data": { "value": 2, "definitionString": "Linjestykke D_1, C_1" },
       "time": 1576581495396,
       "action": "ADD",
-      "delta_time": 1672,
-      "object_name": "m_1",
-      "object_type": "segment"
+      "deltaTime": 1672,
+      "objectName": "m_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "4.00000", "y": "12.00000" },
       "time": 1576581495675,
       "action": "UPDATE",
-      "delta_time": 279,
-      "object_name": "C_1",
-      "object_type": "point"
+      "deltaTime": 279,
+      "objectName": "C_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke C_1, B_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke C_1, B_1" },
       "time": 1576581496494,
       "action": "ADD",
-      "delta_time": 819,
-      "object_name": "n_1",
-      "object_type": "segment"
+      "deltaTime": 819,
+      "objectName": "n_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "4.00000", "y": "13.00000" },
       "time": 1576581496771,
       "action": "UPDATE",
-      "delta_time": 277,
-      "object_name": "B_1",
-      "object_type": "point"
+      "deltaTime": 277,
+      "objectName": "B_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke B_1, A_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke B_1, A_1" },
       "time": 1576581497399,
       "action": "ADD",
-      "delta_time": 628,
-      "object_name": "p_1",
-      "object_type": "segment"
+      "deltaTime": 628,
+      "objectName": "p_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "5.00000", "y": "13.00000" },
       "time": 1576581497676,
       "action": "UPDATE",
-      "delta_time": 277,
-      "object_name": "A_1",
-      "object_type": "point"
+      "deltaTime": 277,
+      "objectName": "A_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke A_1, Z" },
+      "data": { "value": 1, "definitionString": "Linjestykke A_1, Z" },
       "time": 1576581498459,
       "action": "ADD",
-      "delta_time": 783,
-      "object_name": "q_1",
-      "object_type": "segment"
+      "deltaTime": 783,
+      "objectName": "q_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "5.00000", "y": "14.00000" },
       "time": 1576581498740,
       "action": "UPDATE",
-      "delta_time": 281,
-      "object_name": "Z",
-      "object_type": "point"
+      "deltaTime": 281,
+      "objectName": "Z",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke Z, C" },
+      "data": { "value": 1, "definitionString": "Linjestykke Z, C" },
       "time": 1576581499269,
       "action": "ADD",
-      "delta_time": 529,
-      "object_name": "r_1",
-      "object_type": "segment"
+      "deltaTime": 529,
+      "objectName": "r_1",
+      "objectType": "segment"
     },
     {
       "data": { "x": "6.00000", "y": "14.00000" },
       "time": 1576581499554,
       "action": "UPDATE",
-      "delta_time": 285,
-      "object_name": "C",
-      "object_type": "point"
+      "deltaTime": 285,
+      "objectName": "C",
+      "objectType": "point"
     },
     {
-      "data": { "x": "0.00000", "y": "7.00000", "definition_string": "Punkt på yAkse" },
+      "data": { "x": "0.00000", "y": "7.00000", "definitionString": "Punkt på yAkse" },
       "time": 1576581509970,
       "action": "ADD",
-      "delta_time": 10416,
-      "object_name": "I_1",
-      "object_type": "point"
+      "deltaTime": 10416,
+      "objectName": "I_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "0.86862", "y": "7.14394" },
       "time": 1576581511556,
       "action": "ADD",
-      "delta_time": 1586,
-      "object_name": "J_1",
-      "object_type": "point"
+      "deltaTime": 1586,
+      "objectName": "J_1",
+      "objectType": "point"
     },
     {
-      "data": { "x": "0.00000", "y": "7.00000", "definition_string": "Punkt på yAkse" },
+      "data": { "x": "0.00000", "y": "7.00000", "definitionString": "Punkt på yAkse" },
       "time": 1576581518699,
       "action": "ADD",
-      "delta_time": 7143,
-      "object_name": "I_1",
-      "object_type": "point"
+      "deltaTime": 7143,
+      "objectName": "I_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "1.00000", "y": "7.00000" },
       "time": 1576581524779,
       "action": "ADD",
-      "delta_time": 6080,
-      "object_name": "J_1",
-      "object_type": "point"
+      "deltaTime": 6080,
+      "objectName": "J_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "1.00000", "y": "6.00000" },
       "time": 1576581526144,
       "action": "ADD",
-      "delta_time": 1365,
-      "object_name": "K_1",
-      "object_type": "point"
+      "deltaTime": 1365,
+      "objectName": "K_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "2.00000", "y": "6.00000" },
       "time": 1576581529968,
       "action": "ADD",
-      "delta_time": 3824,
-      "object_name": "L_1",
-      "object_type": "point"
+      "deltaTime": 3824,
+      "objectName": "L_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "1.98157", "y": "4.17608" },
       "time": 1576581531509,
       "action": "ADD",
-      "delta_time": 1541,
-      "object_name": "M_1",
-      "object_type": "point"
+      "deltaTime": 1541,
+      "objectName": "M_1",
+      "objectType": "point"
     },
     {
       "data": { "x": ["2.00000", "2.00000"], "y": ["4.00000", "4.00000"] },
       "time": 1576581536097,
       "action": "UPDATE",
-      "delta_time": [4588, 517],
-      "object_name": "M_1",
-      "object_type": "point"
+      "deltaTime": [4588, 517],
+      "objectName": "M_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.00000", "y": "4.00000" },
       "time": 1576581541340,
       "action": "ADD",
-      "delta_time": 5243,
-      "object_name": "N_1",
-      "object_type": "point"
+      "deltaTime": 5243,
+      "objectName": "N_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.00512", "y": "3.16430" },
       "time": 1576581542645,
       "action": "ADD",
-      "delta_time": 1305,
-      "object_name": "O_1",
-      "object_type": "point"
+      "deltaTime": 1305,
+      "objectName": "O_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "4.00000", "y": "3.00000" },
       "time": 1576581546747,
       "action": "UPDATE",
-      "delta_time": 4102,
-      "object_name": "O_1",
-      "object_type": "point"
+      "deltaTime": 4102,
+      "objectName": "O_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "5.00000", "y": "3.00000" },
       "time": 1576581551280,
       "action": "ADD",
-      "delta_time": 4533,
-      "object_name": "P_1",
-      "object_type": "point"
+      "deltaTime": 4533,
+      "objectName": "P_1",
+      "objectType": "point"
     },
     {
       "data": { "x": "5.00000", "y": "2.00000" },
       "time": 1576581553112,
       "action": "ADD",
-      "delta_time": 1832,
-      "object_name": "Q_1",
-      "object_type": "point"
+      "deltaTime": 1832,
+      "objectName": "Q_1",
+      "objectType": "point"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke A, I_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke A, I_1" },
       "time": 1576581563664,
       "action": "ADD",
-      "delta_time": 10552,
-      "object_name": "s_1",
-      "object_type": "segment"
+      "deltaTime": 10552,
+      "objectName": "s_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke J_1, I_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke J_1, I_1" },
       "time": 1576581565604,
       "action": "ADD",
-      "delta_time": 1940,
-      "object_name": "t_1",
-      "object_type": "segment"
+      "deltaTime": 1940,
+      "objectName": "t_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke J_1, K_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke J_1, K_1" },
       "time": 1576581566861,
       "action": "ADD",
-      "delta_time": 1257,
-      "object_name": "a_1",
-      "object_type": "segment"
+      "deltaTime": 1257,
+      "objectName": "a_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke K_1, L_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke K_1, L_1" },
       "time": 1576581567895,
       "action": "ADD",
-      "delta_time": 1034,
-      "object_name": "b_1",
-      "object_type": "segment"
+      "deltaTime": 1034,
+      "objectName": "b_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke L_1, M_1" },
+      "data": { "value": 2, "definitionString": "Linjestykke L_1, M_1" },
       "time": 1576581569221,
       "action": "ADD",
-      "delta_time": 1326,
-      "object_name": "c_1",
-      "object_type": "segment"
+      "deltaTime": 1326,
+      "objectName": "c_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 2, "definition_string": "Linjestykke M_1, N_1" },
+      "data": { "value": 2, "definitionString": "Linjestykke M_1, N_1" },
       "time": 1576581571344,
       "action": "ADD",
-      "delta_time": 2123,
-      "object_name": "d_1",
-      "object_type": "segment"
+      "deltaTime": 2123,
+      "objectName": "d_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke N_1, O_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke N_1, O_1" },
       "time": 1576581572152,
       "action": "ADD",
-      "delta_time": 808,
-      "object_name": "e_1",
-      "object_type": "segment"
+      "deltaTime": 808,
+      "objectName": "e_1",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke O_1, P_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke O_1, P_1" },
       "time": 1576581573379,
       "action": "ADD",
-      "delta_time": 1227,
-      "object_name": "f_2",
-      "object_type": "segment"
+      "deltaTime": 1227,
+      "objectName": "f_2",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke P_1, Q_1" },
+      "data": { "value": 1, "definitionString": "Linjestykke P_1, Q_1" },
       "time": 1576581574489,
       "action": "ADD",
-      "delta_time": 1110,
-      "object_name": "g_2",
-      "object_type": "segment"
+      "deltaTime": 1110,
+      "objectName": "g_2",
+      "objectType": "segment"
     },
     {
-      "data": { "value": 1, "definition_string": "Linjestykke Q_1, D" },
+      "data": { "value": 1, "definitionString": "Linjestykke Q_1, D" },
       "time": 1576581575356,
       "action": "ADD",
-      "delta_time": 867,
-      "object_name": "h_2",
-      "object_type": "segment"
+      "deltaTime": 867,
+      "objectName": "h_2",
+      "objectType": "segment"
     },
     {
       "data": { "x": "6.00000", "y": "2.00000" },
       "time": 1576581575641,
       "action": "UPDATE",
-      "delta_time": 285,
-      "object_name": "D",
-      "object_type": "point"
+      "deltaTime": 285,
+      "objectName": "D",
+      "objectType": "point"
     }
   ]
 }

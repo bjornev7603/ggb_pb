@@ -1,4 +1,4 @@
-import Widget from './ggbWidget.js'
+import Widget from './ggbPlaybackWidget.js'
 // import Widget from './test.js'
 
 const configFile = 'configA.json'
@@ -52,7 +52,7 @@ fileJsonUpload.onchange = inn => {
 //Onanswer is callback
 //Answer is previous
 let onAnswer = answer => {
-  ans = answer
+  ans.log = answer
   console.log('ONANSWER')
   console.log(answer)
 }
