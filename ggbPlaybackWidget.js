@@ -7,7 +7,8 @@ export default class GgbPlaybackWidget {
       ADD: arg => this.draw_ggb(arg),
       UPDATE: arg => this.draw_ggb(arg),
       CLEAR_ANIMATIONS: () => this.clearAnimations(),
-      RESET: () => this.api.reset()
+      RESET: () => this.api.reset(),
+      UNDO: arg => this.undo_action(arg)
     }
 
     this.ggbId = `${this.divElementId}GGBcontainer`
@@ -34,8 +35,10 @@ export default class GgbPlaybackWidget {
       useBrowserForJS: false,
       autoHeight: true,
       language: 'nb'
+
       // showLogging: 'true' //only for testing/debugging
     }
+
     // overwrite default values with values passed down from config
     // this.config.parameters = { ...parameters, ...config.ggbApplet }
     this.config = {
@@ -54,9 +57,16 @@ export default class GgbPlaybackWidget {
     if (this.answer.log !== undefined) this.answer = this.answer.log
 
     this.onAnswer = onAnswer
+
+    this.log_objects = [{}]
+    let an = this.edit_log(this.answer)
+    this.answer = an.length > 0 ? an : this.answer
+
     if (options.playback) {
       this.playback = options.playback
     }
+
+    this.divContainer = document.getElementById('widget-container')
 
     this.buildDOM()
     this.config.ggbApplet.appletOnLoad = this.appletOnLoad
@@ -81,11 +91,67 @@ export default class GgbPlaybackWidget {
     window.onload = this.runscript()
   }
 
+  edit_log(ans) {
+    let i = 0
+    this.log_objects.length = 0
+
+    for (let log_line of ans) {
+      if (this.log_objects != null && i > 0) {
+        let found = this.log_objects.find(element => element == log_line.objectName)
+        if (found === undefined) {
+          //object already exists and this is an ADD action (thus UNDO action has been performed)
+          if (log_line.action == 'ADD') {
+            let idx_repeated_el = this.log_objects.findIndex(
+              x => x.objectName === log_line.objectName
+            )
+            if (idx_repeated_el > -1) {
+              this.log_objects[idx_repeated_el].objectName = 'UNDO_' + log_line.objectName
+              this.log_objects[idx_repeated_el].action = 'UNDO'
+            }
+          }
+        }
+      }
+      this.log_objects.push({
+        data: log_line.data,
+        time: log_line.time,
+        action: log_line.action,
+        deltaTime: log_line.deltaTime,
+        objectName: log_line.objectName,
+        objectType: log_line.objectType
+      })
+      i++
+    }
+
+    return this.log_objects
+  }
+
+  undo_action(arg) {
+    let logg = this.answer[arg]
+
+    let msgDiv
+    msgDiv = document.getElementById('msgdiv')
+    if (msgDiv != undefined) {
+      msgDiv.remove()
+    }
+
+    msgDiv = document.createElement('div')
+    msgDiv.id = 'msgdiv'
+    msgDiv.classList.add('drawing-playback-container')
+    msgDiv.style = 'float: left'
+    this.divContainer.prepend(msgDiv)
+
+    let span = document.createElement('span')
+    span.style = 'color: red; font-weight: bold;'
+    msgDiv.append(span)
+    let msgTxt = document.createTextNode('Undoing "' + logg.objectName.split('_')[1] + '"')
+    span.append(msgTxt)
+  }
+
   draw_ggb(arg) {
-    let logg = '',
-      xx = '',
-      yy = ''
-    logg = this.answer[arg]
+    //let logg = '',
+    let xx = ''
+    let yy = ''
+    let logg = this.answer[arg]
 
     switch (logg.objectType) {
       case 'point':
@@ -115,6 +181,11 @@ export default class GgbPlaybackWidget {
             break
         }
         break
+    }
+    //reset red message field (used for undo action etc)
+    let msgDiv = document.getElementById('msgdiv')
+    if (msgDiv != undefined) {
+      msgDiv.remove()
     }
   }
 
@@ -208,8 +279,6 @@ export default class GgbPlaybackWidget {
     // 	console.log(obj)
     // }
     // api.registerClickListener(clickListener)
-
-    api.recalculateEnvironments()
   }
 
   setAns() {
@@ -252,6 +321,7 @@ export default class GgbPlaybackWidget {
         reset_icon: 'mdi-skip-backward'
       }
     ]
+
     for (let tool of actions) {
       let div = document.createElement('div')
       div.classList.add('playback-tool')
