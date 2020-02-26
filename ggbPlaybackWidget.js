@@ -94,29 +94,60 @@ export default class GgbPlaybackWidget {
   edit_log(ans) {
     let i = 0
     this.log_objects.length = 0
+    let already_set_undone = 0
+    //let subtracted_undones = 0
 
     for (let log_line of ans) {
+      let idx_repeated_el = -1
+      let jumpover_undones = 0
+
       if (this.log_objects != null && i > 0) {
         let found = this.log_objects.find(element => element == log_line.objectName)
         if (found === undefined) {
           //object already exists and this is an ADD action (thus UNDO action has been performed)
-          if (log_line.action == 'ADD') {
-            let idx_repeated_el = this.log_objects.findIndex(
-              x => x.objectName === log_line.objectName
+          if (log_line.action == 'ADD' || this.log_objects.find(element => element == 'UNDO')) {
+            //reverse array to be able to find previous object, eg E
+            let sorted_arr = [...this.log_objects]
+            sorted_arr.sort((a, b) => (a.time < b.time ? 1 : -1))
+            idx_repeated_el = sorted_arr.findIndex(
+              x => x.objectName === log_line.objectName && x.to_undo === false
             )
+            //index is from reversed array, turn around to calculate index in normal array
             if (idx_repeated_el > -1) {
-              this.log_objects[idx_repeated_el].objectName = 'UNDO_' + log_line.objectName
-              this.log_objects[idx_repeated_el].action = 'UNDO'
+              idx_repeated_el = sorted_arr.length - idx_repeated_el - 1
+            }
+            already_set_undone = 0
+            if (idx_repeated_el > -1) {
+              for (let xx = idx_repeated_el + 1; xx < i; xx++) {
+                if (this.log_objects[xx].num_undo != null) {
+                  //counting number of unsets already indicated between the repeated object and the previous instance of it
+                  already_set_undone += this.log_objects[xx].num_undo
+                }
+              }
+
+              let num_repeats
+              if (idx_repeated_el > -1) {
+                num_repeats = i - idx_repeated_el // - how many previous rows to mark as to_undo
+              } else {
+                num_repeats = null
+              }
+              for (let xx = i - num_repeats; xx < i; xx++) {
+                //mark objects as to_undo
+                this.log_objects[xx].to_undo = true
+              }
             }
           }
         }
       }
       this.log_objects.push({
         data: log_line.data,
-        time: log_line.time,
-        action: log_line.action,
-        deltaTime: log_line.deltaTime,
+        num_undo: idx_repeated_el > -1 ? i - idx_repeated_el - already_set_undone : null,
         objectName: log_line.objectName,
+        time: log_line.time,
+        to_undo: false,
+        r_action: log_line.action,
+        action: idx_repeated_el > -1 ? 'UNDO' : log_line.action, //'UNDONE' : log_line.action,
+        deltaTime: log_line.deltaTime,
         objectType: log_line.objectType
       })
       i++
@@ -125,9 +156,7 @@ export default class GgbPlaybackWidget {
     return this.log_objects
   }
 
-  undo_action(arg) {
-    let logg = this.answer[arg]
-
+  show_action_msg(logg) {
     let msgDiv
     msgDiv = document.getElementById('msgdiv')
     if (msgDiv != undefined) {
@@ -143,8 +172,23 @@ export default class GgbPlaybackWidget {
     let span = document.createElement('span')
     span.style = 'color: red; font-weight: bold;'
     msgDiv.append(span)
-    let msgTxt = document.createTextNode('Undoing "' + logg.objectName.split('_')[1] + '"')
+    let msgTxt = document.createTextNode(
+      'Action: "' + logg.action + ' on object ' + logg.objectName + '"'
+    )
     span.append(msgTxt)
+  }
+
+  undo_action(arg) {
+    let logg = this.answer[arg]
+
+    for (let i = 0; i < logg.num_undo; i++) {
+      this.show_action_msg(logg)
+
+      this.api.undo()
+    }
+
+    this.show_action_msg(logg)
+    this.draw_ggb(arg)
   }
 
   draw_ggb(arg) {
@@ -153,11 +197,15 @@ export default class GgbPlaybackWidget {
     let yy = ''
     let logg = this.answer[arg]
 
+    this.show_action_msg(logg)
+
     switch (logg.objectType) {
       case 'point':
         xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
         yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
+        //this.api.setUndoPoint()
         this.api.evalCommand(logg.objectName + '= (' + xx + ', ' + yy + ')')
+
         break
       case 'segment':
       case 'line':
@@ -170,23 +218,28 @@ export default class GgbPlaybackWidget {
         switch (logg.objectType) {
           case 'segment':
             //create Segment
+            //this.api.setUndoPoint()
             this.api.evalCommand(logg.objectName + '= Segment(' + b1 + ',' + b2 + ')')
+
             break
           case 'line':
+            //this.api.setUndoPoint()
             descr.indexOf('Midtnormal') === -1
               ? //create Line
                 this.api.evalCommand(logg.objectName + '= Line(' + b1 + ',' + b2 + ')')
               : //Create PerpendicularBisector (midtnormal)
                 this.api.evalCommand(logg.objectName + '= PerpendicularBisector(' + b1 + ')')
+
             break
         }
         break
     }
+
     //reset red message field (used for undo action etc)
-    let msgDiv = document.getElementById('msgdiv')
-    if (msgDiv != undefined) {
-      msgDiv.remove()
-    }
+    //let msgDiv = document.getElementById('msgdiv')
+    //if (msgDiv != undefined) {
+    //      msgDiv.remove()
+    //  }
   }
 
   clearAnimations() {
