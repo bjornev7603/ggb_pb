@@ -145,12 +145,38 @@ export default class GgbPlaybackWidget {
         objectName: log_line.objectName,
         time: log_line.time,
         to_undo: false,
-        r_action: log_line.action,
-        action: idx_repeated_el > -1 ? 'UNDO' : log_line.action, //'UNDONE' : log_line.action,
+        action: log_line.action, //'UNDO' : log_line.action,
         deltaTime: log_line.deltaTime,
         objectType: log_line.objectType
       })
       i++
+    }
+    //go through obj array and insert the n number of undo lines in corresponding place
+    if (this.log_objects.length > 0) {
+      for (let x = 0; x < this.log_objects.length; x++) {
+        let tp = 0
+        if (this.log_objects[x].num_undo != null) {
+          tp = x
+          for (let i = 0; i < this.log_objects[x].num_undo; i++) {
+            if (this.log_objects[tp - i - 1].to_undo == null) {
+              //this.log_objects[x].num_undo++
+              //i++
+            }
+            let undo_obj = {
+              data: null,
+              num_undo: null,
+              objectName: this.log_objects[tp - i - 1].objectName,
+              time: null,
+              to_undo: null,
+              action: 'UNDO',
+              deltaTime: null,
+              objectType: null
+            }
+            this.log_objects.splice(x - i, 0, undo_obj)
+            x = x + 1
+          }
+        }
+      }
     }
 
     return this.log_objects
@@ -172,23 +198,14 @@ export default class GgbPlaybackWidget {
     let span = document.createElement('span')
     span.style = 'color: red; font-weight: bold;'
     msgDiv.append(span)
-    let msgTxt = document.createTextNode(
-      'Action: "' + logg.action + ' on object ' + logg.objectName + '"'
-    )
+    let msgTxt = document.createTextNode('Action: ' + logg.action + ' object ' + logg.objectName)
     span.append(msgTxt)
   }
 
   undo_action(arg) {
     let logg = this.answer[arg]
-
-    for (let i = 0; i < logg.num_undo; i++) {
-      this.show_action_msg(logg)
-
-      this.api.undo()
-    }
-
     this.show_action_msg(logg)
-    this.draw_ggb(arg)
+    this.api.undo()
   }
 
   draw_ggb(arg) {
@@ -203,7 +220,13 @@ export default class GgbPlaybackWidget {
       case 'point':
         xx = typeof logg.data.x === 'object' ? logg.data.x[logg.data.x.length - 1] : logg.data.x
         yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
-        //this.api.setUndoPoint()
+        try {
+          //set an undo point in geogebra, so an undo() can be performed
+          this.api.setUndoPoint()
+        } catch (e) {
+          console.log(e)
+          // expected output: ReferenceError: setundo is not defined
+        }
         this.api.evalCommand(logg.objectName + '= (' + xx + ', ' + yy + ')')
 
         break
@@ -218,12 +241,27 @@ export default class GgbPlaybackWidget {
         switch (logg.objectType) {
           case 'segment':
             //create Segment
-            //this.api.setUndoPoint()
+
+            try {
+              //set an undo point in geogebra, so an undo() can be performed
+              this.api.setUndoPoint()
+            } catch (e) {
+              console.log(e)
+              // expected output: ReferenceError: setundo is not defined
+            }
+
             this.api.evalCommand(logg.objectName + '= Segment(' + b1 + ',' + b2 + ')')
 
             break
           case 'line':
-            //this.api.setUndoPoint()
+            try {
+              //set an undo point in geogebra, so an undo() can be performed
+              this.api.setUndoPoint()
+            } catch (e) {
+              console.log(e)
+              // expected output: ReferenceError: setundo is not defined
+            }
+
             descr.indexOf('Midtnormal') === -1
               ? //create Line
                 this.api.evalCommand(logg.objectName + '= Line(' + b1 + ',' + b2 + ')')
