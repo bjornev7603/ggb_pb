@@ -89,7 +89,7 @@ export default class GgbPlaybackWidget {
     window.onload = this.runscript()
   }
 
-  show_action_msg(logg) {
+  show_action_msg(ev) {
     let msgDiv
     msgDiv = document.getElementById("msgdiv")
     if (msgDiv != undefined) {
@@ -106,7 +106,7 @@ export default class GgbPlaybackWidget {
     span.style = "color: red; font-weight: bold;"
     msgDiv.append(span)
     let msgTxt = document.createTextNode(
-      "Action: " + logg.action + " object " + logg.objectName
+      "Action: " + ev.action + " object " + ev.objectName
     )
     span.append(msgTxt)
   }
@@ -118,87 +118,48 @@ export default class GgbPlaybackWidget {
   }
 
   draw_ggb(arg) {
-    //let logg = '',
-    let xx = ""
-    let yy = ""
-    let logg = this.answer[arg]
-
-    this.show_action_msg(logg)
-
-    switch (logg.objectType) {
+    const event = this.answer[arg]
+    this.show_action_msg(event)
+    console.log("CURRENT DATA POINT:", event)
+    let cmd = `${event.objectName}=`,
+      defStr
+    switch (event.objectType) {
       case "point":
-        xx =
-          typeof logg.data.x === "object"
-            ? logg.data.x[logg.data.x.length - 1]
-            : logg.data.x
-        yy =
-          typeof logg.data.y === "object"
-            ? logg.data.x[logg.data.y.length - 1]
-            : logg.data.y
-        try {
-          //set an undo point in geogebra, so an undo() can be performed
-        } catch (e) {
-          console.log(e)
-          // expected output: ReferenceError: setundo is not defined
+        const coords = event.data
+        const numOfPoints = typeof event.data.x === "object"
+        let [x, y] = numOfPoints
+          ? [coords.x[coords.x.length - 1], coords.y[coords.y.length - 1]]
+          : [coords.x, coords.y]
+        cmd += `(${x},${y})`
+        break
+      case "line":
+        console.log("ADD LINE")
+        defStr = event.data.definitionString.split(" ")
+        const [type, objs] = [defStr[0], defStr.slice(1).join("")]
+        console.log(type, objs)
+        switch (type) {
+          case "Linje":
+            cmd += `Line(${objs})`
+            break
+          // BUG: There is an issue where the defString returns as "Midtnormal AB", this will be a problem
+          // when the arguement "AB" is of the form e.g. "A_2B_4"
+          // BUG: Midtnormal for segment mangler
+          case "Midtnormal":
+            if (objs[0] === objs[0].toUpperCase())
+              cmd += `PerpendicularBisector(${objs[0]},${objs[1]})`
+            else cmd += `PerpendicularBisector(${objs})`
+            break
         }
-        this.api.evalCommand(logg.objectName + "= (" + xx + ", " + yy + ")")
-
         break
       case "segment":
-      case "line":
-        let descr = logg.data.definitionString
-        //description values not in log, must fetch objects in defString for now
-        let elems = descr.split(" ")
-        let b1 = elems[1].includes(",")
-          ? elems[1].slice(0, elems[1].indexOf(","))
-          : elems[1]
-        let b2 = elems[2]
-
-        switch (logg.objectType) {
-          case "segment":
-            //create Segment
-
-            try {
-              //set an undo point in geogebra, so an undo() can be performed
-            } catch (e) {
-              console.log(e)
-              // expected output: ReferenceError: setundo is not defined
-            }
-
-            this.api.evalCommand(
-              logg.objectName + "= Segment(" + b1 + "," + b2 + ")"
-            )
-
-            break
-          case "line":
-            try {
-              //set an undo point in geogebra, so an undo() can be performed
-            } catch (e) {
-              console.log(e)
-              // expected output: ReferenceError: setundo is not defined
-            }
-
-            descr.indexOf("Midtnormal") === -1
-              ? //create Line
-                this.api.evalCommand(
-                  logg.objectName + "= Line(" + b1 + "," + b2 + ")"
-                )
-              : //Create PerpendicularBisector (midtnormal)
-                this.api.evalCommand(
-                  logg.objectName + "= PerpendicularBisector(" + b1 + ")"
-                )
-
-            break
-        }
-
+        console.log("ADD SEGMENT")
+        defStr = event.data.definitionString.split(" ").splice(1)
+        cmd += `Segment(${defStr[0][0]},${defStr[1][0]})`
         break
     }
+    console.log("EVAL:", cmd)
+    this.api.evalCommand(cmd)
     this.api.setUndoPoint()
-    //reset red message field (used for undo action etc)
-    //let msgDiv = document.getElementById('msgdiv')
-    //if (msgDiv != undefined) {
-    //      msgDiv.remove()
-    //  }
   }
 
   clearAnimations() {
@@ -275,7 +236,9 @@ export default class GgbPlaybackWidget {
       }
       api.registerAddListener(addListener)
       const clientListener = evt => {
+        // console.log("CLIENTLISTENER:", evt)
         if (evt[0] == "removeMacro") this.logger(api, null, "RESET")
+        // else if (evt[0] == "undo") this.logger(api, null, "UNDO")
       }
       api.registerClientListener(clientListener)
 
@@ -455,95 +418,135 @@ function _debounced(delay, fn) {
   }
 }
 
-function edit_log(ans) {
-  let i = 0
-  let log_objects = []
-  let already_set_undone = 0
-  //let subtracted_undones = 0
-
-  for (let log_line of ans) {
-    let idx_repeated_el = -1
-
-    let found = log_objects.find(element => element == log_line.objectName)
-    if (found === undefined) {
-      //object already exists and this is an ADD action (thus UNDO action has been performed)
-      if (
-        log_line.action == "ADD" ||
-        log_objects.find(element => element == "UNDO")
-      ) {
-        //reverse array to be able to find previous object, eg E
-        let sorted_arr = [...log_objects]
-        sorted_arr.sort((a, b) => (a.time < b.time ? 1 : -1))
-        idx_repeated_el = sorted_arr.findIndex(
-          x => x.objectName === log_line.objectName && x.to_undo === false
-        )
-        //index is from reversed array, turn around to calculate index in normal array
-        if (idx_repeated_el > -1) {
-          idx_repeated_el = sorted_arr.length - idx_repeated_el - 1
-        }
-        already_set_undone = 0
-        if (idx_repeated_el > -1) {
-          for (let xx = idx_repeated_el + 1; xx < i; xx++) {
-            if (log_objects[xx].num_undo != null) {
-              //counting number of unsets already indicated between the repeated object and the previous instance of it
-              already_set_undone += log_objects[xx].num_undo
+function edit_log(log) {
+  let logg = []
+  for (const [i, ev] of log.entries()) {
+    // Only ADD events need to be checked for undo
+    if (ev.action == "ADD") {
+      // find index of first event with equal obj_name and is active (i.e. visible on screen)
+      let index = logg.findIndex(
+        el => el.objectName === ev.objectName && el.active === true
+      )
+      if (index > -1) {
+        // get chunk of array where there are possible undo events missing
+        let sliceLength = logg.slice(index).length
+        // loop over chunk in reverse to get undo order right
+        for (let j = sliceLength; j > 0; j--) {
+          let undoEv = logg[index + j - 1]
+          // check if event is undoable, i.e. not already an undo event and is visible on screen
+          if (undoEv.action !== "UNDO" && undoEv.active == true) {
+            // set visibility to false (this action will be undone)
+            undoEv.active = false
+            // insert undo event in the new log (logg)
+            let undo = {
+              action: "UNDO",
+              msg: `**UNDOING** ${undoEv.action}: ${undoEv.objectName}`,
+              objectName: `${undoEv.action}: ${undoEv.objectName}`
             }
-          }
-
-          let num_repeats
-          if (idx_repeated_el > -1) {
-            num_repeats = i - idx_repeated_el // - how many previous rows to mark as to_undo
-          } else {
-            num_repeats = null
-          }
-          for (let xx = i - num_repeats; xx < i; xx++) {
-            //mark objects as to_undo
-            log_objects[xx].to_undo = true
+            logg.push(undo)
           }
         }
       }
     }
-
-    log_objects.push({
-      data: log_line.data,
-      num_undo:
-        idx_repeated_el > -1 ? i - idx_repeated_el - already_set_undone : null,
-      objectName: log_line.objectName,
-      time: log_line.time,
-      to_undo: false,
-      action: log_line.action, //'UNDO' : log_line.action,
-      deltaTime: log_line.deltaTime,
-      objectType: log_line.objectType
-    })
-    i++
-  }
-  //go through obj array and insert the n number of undo lines in corresponding place
-  if (log_objects.length > 0) {
-    for (let x = 0; x < log_objects.length; x++) {
-      let tp = 0
-      if (log_objects[x].num_undo != null) {
-        tp = x
-        for (let i = 0; i < log_objects[x].num_undo; i++) {
-          if (log_objects[tp - i - 1].to_undo == null) {
-            //this.log_objects[x].num_undo++
-            //i++
-          }
-          let undo_obj = {
-            data: null,
-            num_undo: null,
-            objectName: log_objects[tp - i - 1].objectName,
-            time: null,
-            to_undo: null,
-            action: "UNDO",
-            deltaTime: null,
-            objectType: null
-          }
-          log_objects.splice(x - i, 0, undo_obj)
-          x = x + 1
-        }
-      }
+    // insert event in logg
+    let evCopy = {
+      ...ev
     }
+    evCopy.active = true
+    logg.push(evCopy)
   }
-  console.log(log_objects)
-  return log_objects
+  return logg
 }
+
+// function edit_log(ans) {
+//   let i = 0
+//   let log_objects = []
+//   let already_set_undone = 0
+//   //let subtracted_undones = 0
+
+//   for (let log_line of ans) {
+//     let idx_repeated_el = -1
+
+//     let found = log_objects.find(element => element == log_line.objectName)
+//     if (found === undefined) {
+//       //object already exists and this is an ADD action (thus UNDO action has been performed)
+//       if (
+//         log_line.action == "ADD" ||
+//         log_objects.find(element => element == "UNDO")
+//       ) {
+//         //reverse array to be able to find previous object, eg E
+//         let sorted_arr = [...log_objects]
+//         sorted_arr.sort((a, b) => (a.time < b.time ? 1 : -1))
+//         idx_repeated_el = sorted_arr.findIndex(
+//           x => x.objectName === log_line.objectName && x.to_undo === false
+//         )
+//         //index is from reversed array, turn around to calculate index in normal array
+//         if (idx_repeated_el > -1) {
+//           idx_repeated_el = sorted_arr.length - idx_repeated_el - 1
+//         }
+//         already_set_undone = 0
+//         if (idx_repeated_el > -1) {
+//           for (let xx = idx_repeated_el + 1; xx < i; xx++) {
+//             if (log_objects[xx].num_undo != null) {
+//               //counting number of unsets already indicated between the repeated object and the previous instance of it
+//               already_set_undone += log_objects[xx].num_undo
+//             }
+//           }
+
+//           let num_repeats
+//           if (idx_repeated_el > -1) {
+//             num_repeats = i - idx_repeated_el // - how many previous rows to mark as to_undo
+//           } else {
+//             num_repeats = null
+//           }
+//           for (let xx = i - num_repeats; xx < i; xx++) {
+//             //mark objects as to_undo
+//             log_objects[xx].to_undo = true
+//           }
+//         }
+//       }
+//     }
+
+//     log_objects.push({
+//       data: log_line.data,
+//       num_undo:
+//         idx_repeated_el > -1 ? i - idx_repeated_el - already_set_undone : null,
+//       objectName: log_line.objectName,
+//       time: log_line.time,
+//       to_undo: false,
+//       action: log_line.action, //'UNDO' : log_line.action,
+//       deltaTime: log_line.deltaTime,
+//       objectType: log_line.objectType
+//     })
+//     i++
+//   }
+//   //go through obj array and insert the n number of undo lines in corresponding place
+//   if (log_objects.length > 0) {
+//     for (let x = 0; x < log_objects.length; x++) {
+//       let tp = 0
+//       if (log_objects[x].num_undo != null) {
+//         tp = x
+//         for (let i = 0; i < log_objects[x].num_undo; i++) {
+//           if (log_objects[tp - i - 1].to_undo == null) {
+//             //this.log_objects[x].num_undo++
+//             //i++
+//           }
+//           let undo_obj = {
+//             data: null,
+//             num_undo: null,
+//             objectName: log_objects[tp - i - 1].objectName,
+//             time: null,
+//             to_undo: null,
+//             action: "UNDO",
+//             deltaTime: null,
+//             objectType: null
+//           }
+//           log_objects.splice(x - i, 0, undo_obj)
+//           x = x + 1
+//         }
+//       }
+//     }
+//   }
+//   console.log(log_objects)
+//   return log_objects
+// }
