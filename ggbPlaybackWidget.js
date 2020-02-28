@@ -53,14 +53,11 @@ export default class GgbPlaybackWidget {
       } */
 
     this.vars = {}
+
     this.answer = answer || { log: [], states: [] }
     if (this.answer.log !== undefined) this.answer = this.answer.log
 
     this.onAnswer = onAnswer
-
-    this.log_objects = [{}]
-    let an = this.edit_log(this.answer)
-    this.answer = an.length > 0 ? an : this.answer
 
     if (options.playback) {
       this.playback = options.playback
@@ -74,6 +71,7 @@ export default class GgbPlaybackWidget {
     if (!this.playback) {
       this.setAns()
     } else {
+      this.answer = edit_log(answer)
       this.state = {
         next: this.answer[0].action,
 
@@ -89,97 +87,6 @@ export default class GgbPlaybackWidget {
       }
     }
     window.onload = this.runscript()
-  }
-
-  edit_log(ans) {
-    let i = 0
-    this.log_objects.length = 0
-    let already_set_undone = 0
-    //let subtracted_undones = 0
-
-    for (let log_line of ans) {
-      let idx_repeated_el = -1
-      let jumpover_undones = 0
-
-      if (this.log_objects != null && i > 0) {
-        let found = this.log_objects.find(element => element == log_line.objectName)
-        if (found === undefined) {
-          //object already exists and this is an ADD action (thus UNDO action has been performed)
-          if (log_line.action == 'ADD' || this.log_objects.find(element => element == 'UNDO')) {
-            //reverse array to be able to find previous object, eg E
-            let sorted_arr = [...this.log_objects]
-            sorted_arr.sort((a, b) => (a.time < b.time ? 1 : -1))
-            idx_repeated_el = sorted_arr.findIndex(
-              x => x.objectName === log_line.objectName && x.to_undo === false
-            )
-            //index is from reversed array, turn around to calculate index in normal array
-            if (idx_repeated_el > -1) {
-              idx_repeated_el = sorted_arr.length - idx_repeated_el - 1
-            }
-            already_set_undone = 0
-            if (idx_repeated_el > -1) {
-              for (let xx = idx_repeated_el + 1; xx < i; xx++) {
-                if (this.log_objects[xx].num_undo != null) {
-                  //counting number of unsets already indicated between the repeated object and the previous instance of it
-                  already_set_undone += this.log_objects[xx].num_undo
-                }
-              }
-
-              let num_repeats
-              if (idx_repeated_el > -1) {
-                num_repeats = i - idx_repeated_el // - how many previous rows to mark as to_undo
-              } else {
-                num_repeats = null
-              }
-              for (let xx = i - num_repeats; xx < i; xx++) {
-                //mark objects as to_undo
-                this.log_objects[xx].to_undo = true
-              }
-            }
-          }
-        }
-      }
-      this.log_objects.push({
-        data: log_line.data,
-        num_undo: idx_repeated_el > -1 ? i - idx_repeated_el - already_set_undone : null,
-        objectName: log_line.objectName,
-        time: log_line.time,
-        to_undo: false,
-        action: log_line.action, //'UNDO' : log_line.action,
-        deltaTime: log_line.deltaTime,
-        objectType: log_line.objectType
-      })
-      i++
-    }
-    //go through obj array and insert the n number of undo lines in corresponding place
-    if (this.log_objects.length > 0) {
-      for (let x = 0; x < this.log_objects.length; x++) {
-        let tp = 0
-        if (this.log_objects[x].num_undo != null) {
-          tp = x
-          for (let i = 0; i < this.log_objects[x].num_undo; i++) {
-            if (this.log_objects[tp - i - 1].to_undo == null) {
-              //this.log_objects[x].num_undo++
-              //i++
-            }
-            let undo_obj = {
-              data: null,
-              num_undo: null,
-              objectName: this.log_objects[tp - i - 1].objectName,
-              time: null,
-              to_undo: null,
-              action: 'UNDO',
-              deltaTime: null,
-              objectType: null
-            }
-            this.log_objects.splice(x - i, 0, undo_obj)
-            x = x + 1
-          }
-        }
-      }
-    }
-
-    return this.log_objects
   }
 
   show_action_msg(logg) {
@@ -222,7 +129,6 @@ export default class GgbPlaybackWidget {
         yy = typeof logg.data.y === 'object' ? logg.data.x[logg.data.y.length - 1] : logg.data.y
         try {
           //set an undo point in geogebra, so an undo() can be performed
-          this.api.setUndoPoint()
         } catch (e) {
           console.log(e)
           // expected output: ReferenceError: setundo is not defined
@@ -244,7 +150,6 @@ export default class GgbPlaybackWidget {
 
             try {
               //set an undo point in geogebra, so an undo() can be performed
-              this.api.setUndoPoint()
             } catch (e) {
               console.log(e)
               // expected output: ReferenceError: setundo is not defined
@@ -256,7 +161,6 @@ export default class GgbPlaybackWidget {
           case 'line':
             try {
               //set an undo point in geogebra, so an undo() can be performed
-              this.api.setUndoPoint()
             } catch (e) {
               console.log(e)
               // expected output: ReferenceError: setundo is not defined
@@ -270,9 +174,10 @@ export default class GgbPlaybackWidget {
 
             break
         }
+
         break
     }
-
+    this.api.setUndoPoint()
     //reset red message field (used for undo action etc)
     //let msgDiv = document.getElementById('msgdiv')
     //if (msgDiv != undefined) {
@@ -529,4 +434,99 @@ function _debounced(delay, fn) {
       timerId = null
     }, delay)
   }
+}
+
+function edit_log(ans) {
+  let i = 0
+  let log_objects = []
+  let already_set_undone = 0
+  let lg_undo_objs = []
+
+  for (let log_line of ans) {
+    let idx_repeated_el = -1
+
+    let found = log_objects.find(element => element == log_line.objectName)
+    if (found === undefined) {
+      //object already exists and this is an ADD action (thus UNDO action has been performed)
+      if (log_line.action == 'ADD' || log_objects.find(element => element == 'UNDO')) {
+        //reverse array to be able to find previous object, eg E
+        let sorted_arr = [...log_objects]
+        sorted_arr.sort((a, b) => (a.time < b.time ? 1 : -1))
+        idx_repeated_el = sorted_arr.findIndex(
+          x => x.objectName === log_line.objectName && x.to_undo === false
+        )
+        //index is from reversed array, turn around to calculate index in normal array
+        if (idx_repeated_el > -1) {
+          idx_repeated_el = sorted_arr.length - idx_repeated_el - 1
+        }
+        already_set_undone = 0
+        if (idx_repeated_el > -1) {
+          for (let xx = idx_repeated_el + 1; xx < i; xx++) {
+            if (log_objects[xx].num_undo != null) {
+              //counting number of unsets already indicated between the repeated object and the previous instance of it
+              already_set_undone += log_objects[xx].num_undo
+            }
+          }
+
+          let num_repeats
+          if (idx_repeated_el > -1) {
+            num_repeats = i - idx_repeated_el // - how many previous rows to mark as to_undo
+          } else {
+            num_repeats = null
+          }
+          for (let xx = i - num_repeats; xx < i; xx++) {
+            //mark objects as to_undo
+            log_objects[xx].to_undo = true
+          }
+        }
+      }
+    }
+
+    log_objects.push({
+      data: log_line.data,
+      num_undo: idx_repeated_el > -1 ? i - idx_repeated_el + already_set_undone : null,
+      objectName: log_line.objectName,
+      time: log_line.time,
+      to_undo: false,
+      action: log_line.action, //'UNDO' : log_line.action,
+      deltaTime: log_line.deltaTime,
+      objectType: log_line.objectType
+    })
+    i++
+  }
+  //go through obj array and insert the n number of undo lines in corresponding place
+  if (log_objects.length > 0) {
+    for (let x = 0; x < log_objects.length; x++) {
+      if (log_objects[x].num_undo != null) {
+        let tp = x
+        lg_undo_objs = []
+        let xtra_stepbacks = 0
+        for (let i = log_objects[x].num_undo; i > 0; i--) {
+          if (lg_undo_objs.includes(log_objects[tp - i].objectName) === false) {
+            lg_undo_objs[tp - i] = log_objects[tp - i].objectName
+            let undo_obj = {
+              data: null,
+              num_undo: null,
+              objectName: log_objects[tp - i].objectName,
+              time: null,
+              to_undo: null,
+              action: 'UNDO',
+              deltaTime: null,
+              objectType: null
+            }
+            log_objects.splice(x - (log_objects[x].num_undo - i - xtra_stepbacks), 0, undo_obj)
+            x = x + 1
+          } else {
+            //If name of object is not already present, it is the last, since starting at the end
+            // => skip and give it a new try by augementing loop by one
+            //if (log_objects[tp - i].num_undo != null) {
+            xtra_stepbacks++
+            //}
+          }
+        }
+      }
+    }
+  }
+  console.log(log_objects)
+  return log_objects
 }
