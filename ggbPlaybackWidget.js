@@ -6,7 +6,6 @@ export default class GgbPlaybackWidget {
     this.eventHandlers = {
       ADD: arg => this.draw_ggb(arg),
       UPDATE: arg => this.draw_ggb(arg),
-      CLEAR_ANIMATIONS: () => this.clearAnimations(),
       RESET: () => this.api.reset(),
       UNDO: arg => this.undo_action(arg)
     }
@@ -183,11 +182,6 @@ export default class GgbPlaybackWidget {
     //if (msgDiv != undefined) {
     //      msgDiv.remove()
     //  }
-  }
-
-  clearAnimations() {
-    this.api.reset()
-    //this.api.newConstruction()
   }
 
   addUpdateListener = (api, name, type, vars = false, aux = false) => {
