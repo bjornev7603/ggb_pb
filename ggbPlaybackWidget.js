@@ -4,9 +4,8 @@ export default class GgbPlaybackWidget {
     this.divElementId = divElementId
 
     this.eventHandlers = {
-      ADD: arg => this.draw_ggb(arg),
-      UPDATE: arg => this.draw_ggb(arg),
-      CLEAR_ANIMATIONS: () => this.clearAnimations(),
+      ADD: arg => this.drawGgb(arg),
+      UPDATE: arg => this.drawGgb(arg),
       RESET: () => this.api.reset(),
       UNDO: arg => this.undo_action(arg)
     }
@@ -15,8 +14,7 @@ export default class GgbPlaybackWidget {
     // default values
     let parameters = {
       id: divElementId,
-      width:
-        document.getElementById(divElementId).clientWidth < 800 ? 600 : 800,
+      width: document.getElementById(divElementId).clientWidth < 800 ? 600 : 800,
       // width: 600,
       height: 450,
       // borderColor: null,
@@ -43,18 +41,20 @@ export default class GgbPlaybackWidget {
     // overwrite default values with values passed down from config
     // this.config.parameters = { ...parameters, ...config.ggbApplet }
     this.config = {
-      ggbApplet: { ...parameters, ...config.ggbApplet },
+      ggbApplet: {
+        ...parameters,
+        ...config.ggbApplet
+      },
       feedback: config.feedback || null,
       vars: config.vars || []
     }
 
-    /* this.config = {
-        ...default_config,
-        ...config
-      } */
 
     this.vars = {}
-    this.answer = answer || { log: [], states: [] }
+    this.answer = answer || {
+      log: [],
+      states: []
+    }
     if (this.answer.log !== undefined) this.answer = this.answer.log
 
     this.onAnswer = onAnswer
@@ -82,7 +82,10 @@ export default class GgbPlaybackWidget {
           this.state.current = (this.state.current + 1) % this.answer.length
           this.state.next = this.answer[this.state.current].action
 
-          return { action: action, index: index }
+          return {
+            action: action,
+            index: index
+          }
         }
       }
     }
@@ -117,7 +120,7 @@ export default class GgbPlaybackWidget {
     this.api.undo()
   }
 
-  draw_ggb(arg) {
+  drawGgb(arg) {
     const event = this.answer[arg]
     this.show_action_msg(event)
     console.log("CURRENT DATA POINT:", event)
@@ -128,8 +131,8 @@ export default class GgbPlaybackWidget {
         const coords = event.data
         const numOfPoints = typeof event.data.x === "object"
         let [x, y] = numOfPoints
-          ? [coords.x[coords.x.length - 1], coords.y[coords.y.length - 1]]
-          : [coords.x, coords.y]
+          ?
+          [coords.x[coords.x.length - 1], coords.y[coords.y.length - 1]] : [coords.x, coords.y]
         cmd += `(${x},${y})`
         break
       case "line":
@@ -141,13 +144,8 @@ export default class GgbPlaybackWidget {
           case "Linje":
             cmd += `Line(${objs})`
             break
-          // BUG: There is an issue where the defString returns as "Midtnormal AB", this will be a problem
-          // when the arguement "AB" is of the form e.g. "A_2B_4"
-          // BUG: Midtnormal for segment mangler
           case "Midtnormal":
-            if (objs[0] === objs[0].toUpperCase())
-              cmd += `PerpendicularBisector(${objs[0]},${objs[1]})`
-            else cmd += `PerpendicularBisector(${objs})`
+            cmd += `PerpendicularBisector(${objs})`
             break
         }
         break
@@ -162,10 +160,6 @@ export default class GgbPlaybackWidget {
     this.api.setUndoPoint()
   }
 
-  clearAnimations() {
-    this.api.reset()
-    //this.api.newConstruction()
-  }
 
   addUpdateListener = (api, name, type, vars = false, aux = false) => {
     const appendVar = (objName = name) => {
@@ -198,9 +192,8 @@ export default class GgbPlaybackWidget {
     let log = {
       action: action,
       time: Date.now(),
-      deltaTime: this.answer.length
-        ? Date.now() - this.answer[this.answer.length - 1].time
-        : null
+      deltaTime: this.answer.length ?
+        Date.now() - this.answer[this.answer.length - 1].time : null
     }
     let type = api.getObjectType(objName)
     if (objName) {
@@ -283,21 +276,22 @@ export default class GgbPlaybackWidget {
     ControlDivElement.classList.add("drawing-playback-container")
 
     //navigating between answers (states)
-    const actions = [
-      {
-        name: "",
-        handler: () => {
-          let toggle = false
-          let { action, index } = this.state.forward()
-          if (index == this.answer.length - 1) toggle = true
-          if (index == 0) this.eventHandlers.CLEAR_ANIMATIONS()
-          this.eventHandlers[action](index)
-          return toggle
-        },
-        icon: "mdi-skip-next",
-        reset_icon: "mdi-skip-backward"
-      }
-    ]
+    const actions = [{
+      name: "",
+      handler: () => {
+        let toggle = false
+        let {
+          action,
+          index
+        } = this.state.forward()
+        if (index == this.answer.length - 1) toggle = true
+        if (index == 0) this.eventHandlers.CLEAR_ANIMATIONS()
+        this.eventHandlers[action](index)
+        return toggle
+      },
+      icon: "mdi-skip-next",
+      reset_icon: "mdi-skip-backward"
+    }]
 
     for (let tool of actions) {
       let div = document.createElement("div")
@@ -372,14 +366,12 @@ var ggbPlaybackWidget = {
           feedbacks: {
             type: "array",
             title: "feedbacks",
-            description:
-              "Array of arrays for feedback (1-1 correspondance with conditions)"
+            description: "Array of arrays for feedback (1-1 correspondance with conditions)"
           },
           conditions: {
             type: "array",
             title: "conditions",
-            description:
-              "Array of conditions to check which feedback to give (1-1 correspondance with feedbacks)"
+            description: "Array of conditions to check which feedback to give (1-1 correspondance with feedbacks)"
           }
         }
       }
@@ -388,26 +380,24 @@ var ggbPlaybackWidget = {
 
   // prettier-ignore
   jsonSchemaData: {
-      "ggbApplet": {},
-      "vars": []
-    },
+    "ggbApplet": {},
+    "vars": []
+  },
   // prettier-ignore
   configStructure: {
-      "ggbApplet": {
-        "ggbBase64":"XXX"
-      }, // see https://wiki.geogebra.org/en/Reference:GeoGebra_App_Parameters
-      "vars": [
-        {
-          "name": "Name of geogebra object",
-          "type": "numeric | point | line | segment | polygon | ..."
-      }
-      ]
-    }
+    "ggbApplet": {
+      "ggbBase64": "XXX"
+    }, // see https://wiki.geogebra.org/en/Reference:GeoGebra_App_Parameters
+    "vars": [{
+      "name": "Name of geogebra object",
+      "type": "numeric | point | line | segment | polygon | ..."
+    }]
+  }
 }
 
 function _debounced(delay, fn) {
   let timerId
-  return function(...args) {
+  return function (...args) {
     if (timerId) {
       clearTimeout(timerId)
     }
