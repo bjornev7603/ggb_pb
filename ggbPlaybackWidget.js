@@ -71,17 +71,16 @@ export default class GgbPlaybackWidget {
     if (!this.playback) {
       this.setAns()
     } else {
+      //BUGFIX: Need to parse log and guesstimate undo actions
       this.answer = edit_log(answer)
       this.state = {
         next: this.answer[0].action,
-
         current: 0,
         forward: () => {
           let action = this.state.next,
             index = this.state.current
           this.state.current = (this.state.current + 1) % this.answer.length
           this.state.next = this.answer[this.state.current].action
-
           return {
             action: action,
             index: index
@@ -93,25 +92,27 @@ export default class GgbPlaybackWidget {
   }
 
   show_action_msg(ev) {
-    let msgDiv
-    msgDiv = document.getElementById("msgdiv")
-    if (msgDiv != undefined) {
-      msgDiv.remove()
-    }
+    // let msgDiv
+    // msgDiv = document.getElementById("msgdiv")
+    // if (msgDiv != undefined) {
+    //   msgDiv.remove()
+    // }
 
-    msgDiv = document.createElement("div")
-    msgDiv.id = "msgdiv"
-    msgDiv.classList.add("drawing-playback-container")
-    msgDiv.style = "float: left"
-    this.divContainer.prepend(msgDiv)
+    // msgDiv = document.createElement("div")
+    // msgDiv.id = "msgdiv"
+    // msgDiv.classList.add("drawing-playback-container")
+    // msgDiv.style = "float: left"
+    // this.divContainer.prepend(msgDiv)
 
-    let span = document.createElement("span")
-    span.style = "color: red; font-weight: bold;"
-    msgDiv.append(span)
-    let msgTxt = document.createTextNode(
-      "Action: " + ev.action + " object " + ev.objectName
-    )
-    span.append(msgTxt)
+    // let span = document.createElement("span")
+    // span.style = "color: red; font-weight: bold;"
+    // msgDiv.append(span)
+    let defStr = ev.data && ev.data.definitionString ? ` (${ev.data.definitionString}).` : "."
+    if (ev.action === "UDNO") defStr = ev.data
+
+    let msgTxt = `${ev.action} ${ev.objectType} ${ev.objectName}${defStr}`
+    this.playbackPrevMsg.innerHTML = `<p>${msgTxt}</p>`
+
   }
 
   undo_action(arg) {
@@ -145,14 +146,22 @@ export default class GgbPlaybackWidget {
             cmd += `Line(${objs})`
             break
           case "Midtnormal":
-            cmd += `PerpendicularBisector(${objs})`
+            cmd += `PerpendicularBisector`
+            if (objs[0] !== objs[0].toUpperCase()) cmd += `(${objs})`
+            else {
+              const match = objs.match(/([A-Z]\_*\d*)/g)
+              console.log("objs:", objs);
+              console.log("match:", match);
+              cmd += `(${match[0]},${match[1]})`
+            }
             break
         }
         break
       case "segment":
         console.log("ADD SEGMENT")
-        defStr = event.data.definitionString.split(" ").splice(1)
-        cmd += `Segment(${defStr[0][0]},${defStr[1][0]})`
+        defStr = event.data.definitionString.split(" ").splice(1).join("").split(",")
+
+        cmd += `Segment(${defStr[0]},${defStr[1]})`
         break
     }
     console.log("EVAL:", cmd)
@@ -269,15 +278,50 @@ export default class GgbPlaybackWidget {
   }
 
   buildPlayback() {
-    const menuDivElement = document.createElement("div")
-    menuDivElement.classList.add("drawing-playback-container")
 
-    const ControlDivElement = document.createElement("div")
-    ControlDivElement.classList.add("drawing-playback-container")
+    // IDEA: programatically build dom from js-object...
+    // const elements = [{
+    //   parent: this.divElementId,
+    //   id: "menu",
+    //   el: "div",
+    //   classList: ["playback-container"],
+    //   children: [{
+    //       id: "prevAction",
+    //       el: "div",
+    //       classList: ["playback-container"]
+    //     },
+    //     {
+    //       id: "control",
+    //       el: "div",
+    //       classList: ["playback-container"]
+    //     },
+    //   ]
+    // }]
+
+    const menuDivElement = document.createElement("div")
+    menuDivElement.classList.add("playback-container")
+
+    const prevActionElement = document.createElement("div")
+    prevActionElement.classList.add("playback-container", "playback-msg-container")
+
+    const prevActionMesgElement = document.createElement("span")
+    prevActionMesgElement.classList.add("playback-msg")
+    prevActionElement.appendChild(prevActionMesgElement)
+    this.playbackPrevMsg = prevActionMesgElement
+
+
+    const controlDivElement = document.createElement("div")
+    controlDivElement.classList.add("playback-container")
+
+
+    const divEl = document.getElementById(this.divElementId)
+    menuDivElement.append(prevActionElement, controlDivElement)
+    divEl.appendChild(menuDivElement)
+
 
     //navigating between answers (states)
     const actions = [{
-      name: "",
+      name: "next",
       handler: () => {
         let toggle = false
         let {
@@ -285,7 +329,7 @@ export default class GgbPlaybackWidget {
           index
         } = this.state.forward()
         if (index == this.answer.length - 1) toggle = true
-        if (index == 0) this.eventHandlers.CLEAR_ANIMATIONS()
+        if (index == 0) this.eventHandlers.RESET()
         this.eventHandlers[action](index)
         return toggle
       },
@@ -300,7 +344,7 @@ export default class GgbPlaybackWidget {
       let i = document.createElement("i")
       i.classList.add("mdi", tool.icon)
       div.append(i)
-      ControlDivElement.append(div)
+      controlDivElement.append(div)
       div.addEventListener("click", () => {
         let toggle = tool.handler()
         if (toggle) {
@@ -312,9 +356,7 @@ export default class GgbPlaybackWidget {
         }
       })
     }
-    const divEl = document.getElementById(this.divElementId)
-    menuDivElement.append(ControlDivElement)
-    divEl.appendChild(menuDivElement)
+
   }
 
   runscript() {
@@ -430,8 +472,9 @@ function edit_log(log) {
             // insert undo event in the new log (logg)
             let undo = {
               action: "UNDO",
-              msg: `**UNDOING** ${undoEv.action}: ${undoEv.objectName}`,
-              objectName: `${undoEv.action}: ${undoEv.objectName}`
+              objectType: undoEv.objectType,
+              objectName: undoEv.objectName,
+              data: undoEv.action
             }
             logg.push(undo)
           }
@@ -445,6 +488,7 @@ function edit_log(log) {
     evCopy.active = true
     logg.push(evCopy)
   }
+  console.log(logg)
   return logg
 }
 

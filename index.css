@@ -1,13 +1,26 @@
 :root {
   --selected-color: #000;
 }
-.drawing-playback-container {
+
+.playback-container {
   display: flex;
   flex-flow: row;
   justify-content: center;
   align-items: center;
   height: 40px;
 }
+
+.playback-msg-container {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  content: "";
+  width: 80px;
+}
+
+.playback-msg {
+  content: "";
+  padding: 2px 16px;
+}
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -66,7 +79,7 @@ body {
   border-radius: 0.15em;
 }
 
-.header > .content {
+.header>.content {
   padding-left: 2rem;
   padding-bottom: 0.5rem;
 }
@@ -97,20 +110,20 @@ body {
   z-index: -1;
 }
 
-.inputfile + label,
+.inputfile+label,
 .input-set-ans {
   max-width: 80%;
   padding: 5px 10px;
   cursor: pointer;
 }
 
-.inputfile-1 + label,
+.inputfile-1+label,
 .input-set-ans {
   color: #c3cbdd;
   background-color: #4168c3;
 }
 
-.inputfile + label svg,
+.inputfile+label svg,
 .input-set-ans svg {
   width: 1em;
   height: 1em;
