@@ -63,8 +63,6 @@ export default class GgbPlaybackWidget {
       this.playback = options.playback
     }
 
-    this.divContainer = document.getElementById("widget-container")
-
     this.buildDOM()
     this.config.ggbApplet.appletOnLoad = this.appletOnLoad
 
@@ -117,6 +115,8 @@ export default class GgbPlaybackWidget {
 
   undo_action(arg) {
     let logg = this.answer[arg]
+    // IDEA: Make user decide to undo
+    // confirm(`do you want to undo? object: ${logg.data} ${logg.objectType} ${logg.objectName}`)
     this.show_action_msg(logg)
     this.api.undo()
   }
@@ -130,7 +130,7 @@ export default class GgbPlaybackWidget {
     switch (event.objectType) {
       case "point":
         const coords = event.data
-        const numOfPoints = typeof event.data.x === "object"
+        const numOfPoints = typeof coords.x === "object"
         let [x, y] = numOfPoints
           ?
           [coords.x[coords.x.length - 1], coords.y[coords.y.length - 1]] : [coords.x, coords.y]
@@ -470,6 +470,9 @@ function edit_log(log) {
             // set visibility to false (this action will be undone)
             undoEv.active = false
             // insert undo event in the new log (logg)
+            if (undoEv.action === "UPDATE" && undoEv.objectType === "point" && !undoable(i, log)) {
+              break
+            }
             let undo = {
               action: "UNDO",
               objectType: undoEv.objectType,
@@ -490,6 +493,36 @@ function edit_log(log) {
   }
   console.log(logg)
   return logg
+}
+
+function undoable(i = 0, log = []) {
+  const ev = log[i]
+  const slice = log.slice(0, i - 1)
+  let lastIndex
+  const filter = slice.filter((v, j) => {
+    let check = false;
+    if (v.objectName === ev.objectName) {
+      lastIndex = j;
+      check = true
+    }
+    return check
+  })
+  const lastEv = slice[lastIndex]
+  return tolarableDistance(lastEv, ev)
+
+
+}
+
+function lastCoords(coords) {
+  const numOfPoints = typeof coords.x === "object"
+  return numOfPoints ? [coords.x[coords.x.length - 1], coords.y[coords.y.length - 1]] : [coords.x, coords.y]
+}
+
+function tolarableDistance(ev1, ev2, tol = 0.25) {
+  const coord1 = lastCoords(ev1.data),
+    coord2 = lastCoords(ev2.data)
+  return Math.abs(coord1[0] - coord2[0]) + Math.abs(coord1[1] - coord2[1]) > tol
+
 }
 
 // function edit_log(ans) {
