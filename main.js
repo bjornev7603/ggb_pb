@@ -1,6 +1,8 @@
 import Widget from './ggbPlaybackWidget.js'
 // import Widget from './test.js'
 
+//import Parser from './../matistikk-csv-parser/parse.js'
+
 const configFile = 'configA.json'
 let currentConfig
 
@@ -44,7 +46,7 @@ fileJsonUpload.onchange = inn => {
     let jsonobj = JSON.parse(evt.target.result)
     logdata_json = jsonobj
     console.log(logdata_json)
-    makeWidget(currentConfig, logdata_json.log, true)
+    makeWidget(currentConfig, logdata_json, true)
   }
   fr.readAsText(file)
 }
